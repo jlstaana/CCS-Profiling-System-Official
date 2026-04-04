@@ -6,29 +6,38 @@ const LOCAL_API = 'http://localhost:8000/api';
 const NGROK_API = 'https://predatorily-nonfelonious-ranae.ngrok-free.dev/api';
 
 // Dynamically determine which API to use
-// Dynamic API URL for production and development
 const getBaseURL = () => {
   // 1. Highest Priority: Vercel/Vite Environment Variable
   if (import.meta.env.VITE_API_BASE_URL) {
     return import.meta.env.VITE_API_BASE_URL;
   }
 
-  // 2. Fallback for Local Development
+  // 2. Production Fallback: Use current host if on Vercel but missing the variable
+  if (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app')) {
+    console.warn('AuthContext: VITE_API_BASE_URL is missing. Falling back to same-origin /api (this may fail if backend is separate).');
+    return `${window.location.origin}/api`;
+  }
+
+  // 3. Local Development Fallback
   if (typeof window !== 'undefined') {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
       return 'http://localhost:8000/api';
     }
   }
 
-  // 3. Last Resort: Default Ngrok (For mobile/cross-device testing)
+  // 4. Last Resort: Default Ngrok
   return 'https://predatorily-nonfelonious-ranae.ngrok-free.dev/api';
 };
 
 axios.defaults.baseURL = getBaseURL();
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
+axios.defaults.withCredentials = true; // Required for CORS/Sanctum
 
-console.log('AuthContext: Using API BaseURL:', axios.defaults.baseURL);
+console.log(`AuthContext Initialized [${import.meta.env.MODE}]:`, {
+  baseURL: axios.defaults.baseURL,
+  origin: typeof window !== 'undefined' ? window.location.origin : 'SSR'
+});
 
 const AuthContext = createContext(null);
 
