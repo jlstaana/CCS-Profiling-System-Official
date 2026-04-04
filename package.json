@@ -7,7 +7,7 @@
     "Backend"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev -w Frontend\" \"npm run dev -w Backend\"",
+    "dev": "concurrently \"npm run dev -w Frontend\" \"npm run dev -w Backend\" \"php Backend/artisan serve\"",
     "build": "npm run build -w Frontend && npm run build -w Backend",
     "install:all": "npm install && npm install -w Frontend && npm install -w Backend"
   },
