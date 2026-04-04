@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "npm install lightningcss-linux-x64-gnu @rolldown/binding-linux-x64-gnu @rollup/rollup-linux-x64-gnu && vite build",
         "dev": "vite"
     },
     "devDependencies": {
