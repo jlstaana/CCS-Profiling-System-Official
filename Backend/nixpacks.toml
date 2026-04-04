@@ -1,0 +1,13 @@
+[phases.setup]
+nixPkgs = ["php84", "php84Packages.composer", "php84Packages.extensions.mysql", "php84Packages.extensions.bcmath", "php84Packages.extensions.gd", "php84Packages.extensions.intl", "php84Packages.extensions.curl", "nginx"]
+
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["composer install --optimize-autoloader --no-interaction --no-scripts", "npm install"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build", "mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache && chmod -R a+rw storage"]
+
+[start]
+cmd = "php artisan migrate --force && /start-container.sh"

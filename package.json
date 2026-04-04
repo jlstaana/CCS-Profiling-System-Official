@@ -1,0 +1,17 @@
+{
+  "name": "ccs-profiling-system",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "Frontend",
+    "Backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w Frontend\" \"npm run dev -w Backend\"",
+    "build": "npm run build -w Frontend && npm run build -w Backend",
+    "install:all": "npm install && npm install -w Frontend && npm install -w Backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
