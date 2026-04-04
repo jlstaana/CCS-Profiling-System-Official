@@ -6,9 +6,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => explode(',', env('CORS_ALLOWED_ORIGINS', 'https://ccs-profiling-system.vercel.app,http://localhost:3000,http://127.0.0.1:3000')),
+    'allowed_origins' => ['*'],
 
-    'allowed_origins_patterns' => ['/^https:\/\/(.*)\.vercel\.app$/'],
+    'allowed_origins_patterns' => [],
 
     'allowed_headers' => ['*'],
 

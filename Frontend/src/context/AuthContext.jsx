@@ -9,7 +9,8 @@ const NGROK_API = 'https://predatorily-nonfelonious-ranae.ngrok-free.dev/api';
 const getBaseURL = () => {
   // 1. Highest Priority: Vercel/Vite Environment Variable
   if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL;
+    // Sanitize: No trailing slash
+    return import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "");
   }
 
   // 2. Production Fallback: Use current host if on Vercel but missing the variable
