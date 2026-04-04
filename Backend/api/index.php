@@ -21,5 +21,8 @@ header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE, PATCH');
 header('Access-Control-Allow-Headers: X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 header('Access-Control-Allow-Credentials: true');
 
-// 3. Forward to the actual Laravel entry point
+// 3. Normalize URI for Laravel (Ensures stability in Monorepos)
+$_SERVER['REQUEST_URI'] = preg_replace('/^\/api/', '', $_SERVER['REQUEST_URI']);
+
+// 4. Forward to the actual Laravel entry point
 require __DIR__ . '/../public/index.php';
