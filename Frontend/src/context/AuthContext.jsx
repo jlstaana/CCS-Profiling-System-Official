@@ -17,11 +17,7 @@ const getBaseURL = () => {
     return url;
   }
 
-  // 2. Production Fallback: Use current host if on Vercel but missing the variable
-  if (typeof window !== 'undefined' && window.location.hostname.endsWith('.vercel.app')) {
-    console.warn('AuthContext: VITE_API_BASE_URL is missing. Falling back to same-origin /api (this may fail if backend is separate).');
-    return `${window.location.origin}/api`;
-  }
+  // (Removed Vercel same-origin fallback to allow falling back to Ngrok)
 
   // 3. Local Development Fallback
   if (typeof window !== 'undefined') {
