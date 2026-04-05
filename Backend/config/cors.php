@@ -10,6 +10,7 @@ return [
         'https://predatorily-nonfelonious-ranae.ngrok-free.dev',
         'https://ccs-profiling-presentation.vercel.app',
         'https://ccs-profiling-system-official-frontend.vercel.app',
+        'https://ccs-profiling-system-official-m56zpgph1.vercel.app',
         'http://localhost:5173',
         'http://localhost:5174',
         'http://localhost:5175',
