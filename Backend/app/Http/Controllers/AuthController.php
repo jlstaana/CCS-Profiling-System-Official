@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -45,10 +46,14 @@ class AuthController extends Controller
         $user = User::where('email', $fields['email'])->first();
 
         // Check password
-        if (!$user || !Hash::check($fields['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Bad creds'
-            ], 401);
+        if (!$user) {
+            Log::warning("Login Failed: Email not found for '" . $fields['email'] . "'");
+            return response()->json(['message' => 'Bad creds'], 401);
+        }
+
+        if (!Hash::check($fields['password'], $user->password)) {
+            Log::warning("Login Failed: Password mismatch for '" . $fields['email'] . "'. Provided password length: " . strlen($fields['password']));
+            return response()->json(['message' => 'Bad creds'], 401);
         }
 
         $token = $user->createToken('myapptoken')->plainTextToken;
