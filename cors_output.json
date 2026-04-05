@@ -1,0 +1,17 @@
+{
+  "status": 204,
+  "headers": {
+    "host": "127.0.0.1:8000",
+    "connection": "close",
+    "x-powered-by": "PHP/8.5.4",
+    "cache-control": "no-cache, private",
+    "date": "Sun, 05 Apr 2026 12:56:14 GMT",
+    "access-control-allow-origin": "https://ccs-profiling-system-official-m56zpgph1.vercel.app",
+    "vary": "Origin, Access-Control-Request-Method, Access-Control-Request-Headers",
+    "access-control-allow-credentials": "true",
+    "access-control-allow-methods": "POST",
+    "access-control-allow-headers": "",
+    "access-control-max-age": "0",
+    "content-type": "text/html; charset=UTF-8"
+  }
+}
