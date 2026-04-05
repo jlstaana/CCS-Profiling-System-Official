@@ -106,9 +106,19 @@ class AdminController extends Controller
 
         $year = date('Y');
         
-        // Count existing users with this role to get sequence
-        $count = User::where('role', $role)->count() + 1;
-        $sequence = str_pad($count, 4, '0', STR_PAD_LEFT);
+        $latestUser = User::where('role', $role)
+            ->where('user_id', 'like', "{$prefix}-{$year}-%")
+            ->orderBy('user_id', 'desc')
+            ->first();
+
+        if ($latestUser && preg_match('/-(\d{4})$/', $latestUser->user_id, $matches)) {
+            $nextSequence = intval($matches[1]) + 1;
+        } else {
+            // Fallback if no users for this year yet
+            $nextSequence = User::where('role', $role)->count() + 1;
+        }
+        
+        $sequence = str_pad($nextSequence, 4, '0', STR_PAD_LEFT);
 
         return "{$prefix}-{$year}-{$sequence}";
     }
