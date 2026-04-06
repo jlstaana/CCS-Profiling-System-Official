@@ -22,10 +22,19 @@ const FacultyInfo = () => {
     fullName: user?.name,
     facultyId: user?.id,
     email: user?.email,
-    contact: '',
-    address: '',
-    birthDate: '',
-    nationality: ''
+    contact: user?.phone || '',
+    address: user?.address || '',
+    birthDate: user?.birth_date || '',
+    nationality: user?.nationality || '',
+    gender: user?.gender || '',
+    zip_code: user?.zip_code || '',
+  });
+
+  const [emergencyContact, setEmergencyContact] = useState({
+    name: user?.emergency_contact_name || '',
+    relationship: user?.emergency_contact_relationship || '',
+    number: user?.emergency_contact_number || '',
+    address: user?.emergency_contact_address || '',
   });
 
   const [employmentInfo, setEmploymentInfo] = useState({
@@ -76,10 +85,16 @@ const FacultyInfo = () => {
               email: personalInfo.email || '',
               contact: personalInfo.contact || '',
               address: personalInfo.address || '',
+              gender: personalInfo.gender || '',
+              zip_code: personalInfo.zip_code || '',
               department: employmentInfo.department || '',
               specialization: employmentInfo.specialization || '',
               profilePic: profilePic,
-              qualifications: qualifications || []
+              qualifications: qualifications || [],
+              emergency_contact_name: emergencyContact.name || '',
+              emergency_contact_relationship: emergencyContact.relationship || '',
+              emergency_contact_number: emergencyContact.number || '',
+              emergency_contact_address: emergencyContact.address || '',
             });
             setShowEditModal(true);
           }}
@@ -113,19 +128,50 @@ const FacultyInfo = () => {
             </div>
             <div style={styles.infoItem}>
               <span style={styles.infoLabel}>Contact:</span>
-              <span>{personalInfo.contact}</span>
+              <span>{personalInfo.contact || 'Not set'}</span>
+            </div>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Gender:</span>
+              <span>{personalInfo.gender || 'Not set'}</span>
             </div>
             <div style={styles.infoItem}>
               <span style={styles.infoLabel}>Address:</span>
-              <span>{personalInfo.address}</span>
+              <span>{personalInfo.address || 'Not set'}</span>
+            </div>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Zip Code:</span>
+              <span>{personalInfo.zip_code || 'Not set'}</span>
             </div>
             <div style={styles.infoItem}>
               <span style={styles.infoLabel}>Birth Date:</span>
-              <span>{personalInfo.birthDate}</span>
+              <span>{personalInfo.birthDate || 'Not set'}</span>
             </div>
             <div style={styles.infoItem}>
               <span style={styles.infoLabel}>Nationality:</span>
-              <span>{personalInfo.nationality}</span>
+              <span>{personalInfo.nationality || 'Not set'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Emergency Contact Card */}
+        <div style={styles.infoCard}>
+          <h3 style={styles.cardTitle}>🚨 Emergency Contact</h3>
+          <div style={styles.infoList}>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Name:</span>
+              <span>{emergencyContact.name || 'Not set'}</span>
+            </div>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Relationship:</span>
+              <span>{emergencyContact.relationship || 'Not set'}</span>
+            </div>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Contact Number:</span>
+              <span>{emergencyContact.number || 'Not set'}</span>
+            </div>
+            <div style={styles.infoItem}>
+              <span style={styles.infoLabel}>Address:</span>
+              <span>{emergencyContact.address || 'Not set'}</span>
             </div>
           </div>
         </div>
@@ -283,12 +329,54 @@ const FacultyInfo = () => {
 
               <div style={styles.formRow}>
                 <div style={styles.formGroup}>
-                  <label style={styles.label}>Contact Number (Instant Update)</label>
+                  <label style={styles.label}>Contact Number (Requires Approval)</label>
                   <input style={styles.input} value={editForm.contact} onChange={e => setEditForm({...editForm, contact: e.target.value})} />
                 </div>
-                 <div style={styles.formGroup}>
-                  <label style={styles.label}>Home Address (Instant Update)</label>
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Gender (Requires Approval)</label>
+                  <select style={styles.input} value={editForm.gender} onChange={e => setEditForm({...editForm, gender: e.target.value})}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style={styles.formRow}>
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Home Address (Requires Approval)</label>
                   <input style={styles.input} value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} />
+                </div>
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Zip Code (Requires Approval)</label>
+                  <input style={styles.input} value={editForm.zip_code} onChange={e => setEditForm({...editForm, zip_code: e.target.value})} />
+                </div>
+              </div>
+
+              {/* Emergency Contact Section */}
+              <div style={{ marginTop: '8px', marginBottom: '16px', padding: '16px', backgroundColor: '#fff5f5', borderRadius: '12px', border: '1px solid #fecaca' }}>
+                <h4 style={{ ...styles.label, color: '#c53030', fontSize: '13px', marginBottom: '16px' }}>🚨 EMERGENCY CONTACT (Requires Approval)</h4>
+                <div style={styles.formRow}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Emergency Contact Name</label>
+                    <input style={styles.input} value={editForm.emergency_contact_name} onChange={e => setEditForm({...editForm, emergency_contact_name: e.target.value})} placeholder="Full name" />
+                  </div>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Relationship</label>
+                    <input style={styles.input} value={editForm.emergency_contact_relationship} onChange={e => setEditForm({...editForm, emergency_contact_relationship: e.target.value})} placeholder="e.g. Spouse, Parent, Sibling" />
+                  </div>
+                </div>
+                <div style={styles.formRow}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Contact Number</label>
+                    <input style={styles.input} value={editForm.emergency_contact_number} onChange={e => setEditForm({...editForm, emergency_contact_number: e.target.value})} placeholder="Phone number" />
+                  </div>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Address</label>
+                    <input style={styles.input} value={editForm.emergency_contact_address} onChange={e => setEditForm({...editForm, emergency_contact_address: e.target.value})} placeholder="Home address" />
+                  </div>
                 </div>
               </div>
 
@@ -339,10 +427,18 @@ const FacultyInfo = () => {
                   if (editForm.email !== user?.email) majorChanges.email = editForm.email;
                   if (editForm.department !== user?.department) majorChanges.department = editForm.department;
                   
-                  // New fields requiring approval
+                  // Personal fields requiring approval
                   if (editForm.address !== (personalInfo.address || '')) majorChanges.address = editForm.address;
                   if (editForm.contact !== (personalInfo.contact || '')) majorChanges.phone = editForm.contact;
+                  if (editForm.gender !== (personalInfo.gender || '')) majorChanges.gender = editForm.gender;
+                  if (editForm.zip_code !== (personalInfo.zip_code || '')) majorChanges.zip_code = editForm.zip_code;
                   if (editForm.specialization !== (user?.specialization || '')) majorChanges.specialization = editForm.specialization;
+
+                  // Emergency contact fields
+                  if (editForm.emergency_contact_name !== (emergencyContact.name || '')) majorChanges.emergency_contact_name = editForm.emergency_contact_name;
+                  if (editForm.emergency_contact_relationship !== (emergencyContact.relationship || '')) majorChanges.emergency_contact_relationship = editForm.emergency_contact_relationship;
+                  if (editForm.emergency_contact_number !== (emergencyContact.number || '')) majorChanges.emergency_contact_number = editForm.emergency_contact_number;
+                  if (editForm.emergency_contact_address !== (emergencyContact.address || '')) majorChanges.emergency_contact_address = editForm.emergency_contact_address;
 
                   // Check if qualifications changed
                   if (JSON.stringify(editForm.qualifications) !== JSON.stringify(user?.qualifications || [])) {

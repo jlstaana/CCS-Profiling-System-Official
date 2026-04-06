@@ -23,6 +23,12 @@ const StudentInfo = () => {
         address: sp.address || '',
         birth_date: sp.birth_date ? new Date(sp.birth_date).toISOString().split('T')[0] : '',
         nationality: sp.nationality || '',
+        gender: sp.gender || '',
+        zip_code: sp.zip_code || '',
+        guardian_name: sp.guardian_name || '',
+        guardian_relationship: sp.guardian_relationship || '',
+        guardian_contact: sp.guardian_contact || '',
+        guardian_address: sp.guardian_address || '',
         academic_history: sp.academic_history || [],
         non_academic_activities: sp.non_academic_activities || [],
         skills: sp.skills || [],
@@ -50,26 +56,34 @@ const StudentInfo = () => {
     const minorChanges = {};
     const majorChanges = {};
     const studentProfile = {
+      // List fields (direct save)
       academic_history: editForm.academic_history,
       non_academic_activities: editForm.non_academic_activities,
       skills: editForm.skills,
-      affiliations: editForm.affiliations
+      affiliations: editForm.affiliations,
+      // All personal info stored in student_profiles table
+      phone: editForm.phone,
+      address: editForm.address,
+      birth_date: editForm.birth_date,
+      nationality: editForm.nationality,
+      gender: editForm.gender,
+      zip_code: editForm.zip_code,
+      guardian_name: editForm.guardian_name,
+      guardian_relationship: editForm.guardian_relationship,
+      guardian_contact: editForm.guardian_contact,
+      guardian_address: editForm.guardian_address,
     };
 
     if (editForm.profile_pic_base64 !== user.profile_pic_base64) {
       minorChanges.profile_pic_base64 = editForm.profile_pic_base64;
     }
 
+    // Changes to users table fields require approval
     if (editForm.name !== user.name) majorChanges.name = editForm.name;
     if (editForm.email !== user.email) majorChanges.email = editForm.email;
     if (editForm.course !== user.course) majorChanges.course = editForm.course;
     if (editForm.year !== user.year) majorChanges.year = editForm.year;
 
-    // Personal details now require approval
-    if (editForm.phone !== (sp.phone || '')) majorChanges.phone = editForm.phone;
-    if (editForm.address !== (sp.address || '')) majorChanges.address = editForm.address;
-    if (editForm.birth_date !== (sp.birth_date || '')) majorChanges.birth_date = editForm.birth_date;
-    if (editForm.nationality !== (sp.nationality || '')) majorChanges.nationality = editForm.nationality;
 
     const res = await updateProfile(minorChanges, majorChanges, studentProfile);
     if (res.success) {
@@ -126,9 +140,12 @@ const StudentInfo = () => {
           <div style={S.infoList}>
             <InfoItem label="Email" value={user.email} />
             <InfoItem label="Phone" value={sp.phone || 'Not set'} />
-            <InfoItem label="Address" value={sp.address || 'Not set'} />
-            <InfoItem label="Birth Date" value={sp.birth_date ? new Date(sp.birth_date).toLocaleDateString() : 'Not set'} />
+            <InfoItem label="Gender" value={sp.gender || 'Not set'} />
+            <InfoItem label="Date of Birth" value={sp.birth_date ? new Date(sp.birth_date).toLocaleDateString() : 'Not set'} />
             <InfoItem label="Nationality" value={sp.nationality || 'Not set'} />
+            <InfoItem label="Address" value={sp.address || 'Not set'} />
+            <InfoItem label="Zip Code" value={sp.zip_code || 'Not set'} />
+            <InfoItem label="Year Level" value={user.year || 'Not set'} />
           </div>
         </div>
 
@@ -158,6 +175,17 @@ const StudentInfo = () => {
             ) : (
               <p style={{ color: '#858796', fontSize: '13px', margin: 0 }}>No skills listed yet.</p>
             )}
+          </div>
+        </div>
+
+        {/* Guardian Info */}
+        <div style={S.infoCard}>
+          <h3 style={S.cardTitle}>👨‍👩‍👧 Guardian Information</h3>
+          <div style={S.infoList}>
+            <InfoItem label="Guardian Name" value={sp.guardian_name || 'Not set'} />
+            <InfoItem label="Relationship" value={sp.guardian_relationship || 'Not set'} />
+            <InfoItem label="Guardian Contact" value={sp.guardian_contact || 'Not set'} />
+            <InfoItem label="Guardian Address" value={sp.guardian_address || 'Not set'} />
           </div>
         </div>
 
@@ -258,17 +286,50 @@ const StudentInfo = () => {
               </div>
 
               <div style={S.formRow}>
-                <FormGroup label="Phone (Instant Update)">
+                <FormGroup label="Phone">
                   <input style={S.input} value={editForm.phone} onChange={e => setEditForm({...editForm, phone: e.target.value})} />
                 </FormGroup>
-                <FormGroup label="Nationality (Instant Update)">
-                  <input style={S.input} value={editForm.nationality} onChange={e => setEditForm({...editForm, nationality: e.target.value})} />
+                <FormGroup label="Gender (Requires Approval)">
+                  <select style={S.input} value={editForm.gender} onChange={e => setEditForm({...editForm, gender: e.target.value})}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Non-binary">Non-binary</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
                 </FormGroup>
               </div>
 
-              <FormGroup label="Home Address (Instant Update)">
+              <div style={S.formRow}>
+                <FormGroup label="Nationality">
+                  <input style={S.input} value={editForm.nationality} onChange={e => setEditForm({...editForm, nationality: e.target.value})} />
+                </FormGroup>
+                <FormGroup label="Zip Code (Requires Approval)">
+                  <input style={S.input} value={editForm.zip_code} onChange={e => setEditForm({...editForm, zip_code: e.target.value})} />
+                </FormGroup>
+              </div>
+
+              <FormGroup label="Home Address">
                 <input style={S.input} value={editForm.address} onChange={e => setEditForm({...editForm, address: e.target.value})} />
               </FormGroup>
+
+              <h4 style={S.subTitle}>👨‍👩‍👧 Guardian Information (Requires Approval)</h4>
+              <div style={S.formRow}>
+                <FormGroup label="Guardian Name">
+                  <input style={S.input} value={editForm.guardian_name} onChange={e => setEditForm({...editForm, guardian_name: e.target.value})} />
+                </FormGroup>
+                <FormGroup label="Relationship to Student">
+                  <input style={S.input} value={editForm.guardian_relationship} onChange={e => setEditForm({...editForm, guardian_relationship: e.target.value})} placeholder="e.g. Mother, Father, Uncle" />
+                </FormGroup>
+              </div>
+              <div style={S.formRow}>
+                <FormGroup label="Guardian Contact Number">
+                  <input style={S.input} value={editForm.guardian_contact} onChange={e => setEditForm({...editForm, guardian_contact: e.target.value})} />
+                </FormGroup>
+                <FormGroup label="Guardian Address">
+                  <input style={S.input} value={editForm.guardian_address} onChange={e => setEditForm({...editForm, guardian_address: e.target.value})} />
+                </FormGroup>
+              </div>
 
               {/* Dynamic Lists */}
               <div style={{ marginTop: '24px' }}>

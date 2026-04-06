@@ -24,10 +24,23 @@ class AdminController extends Controller
 
         if ($changes) {
             // Define which fields belong to which table
-            $userFields = ['name', 'email', 'user_id', 'role', 'department', 'course', 'year', 'specialization', 'bio', 'qualifications'];
-            $profileFields = ['phone', 'address', 'birth_date', 'nationality'];
+            $userFields = [
+                'name', 'email', 'user_id', 'role', 'department', 'course', 'year',
+                'specialization', 'bio', 'qualifications',
+                // Faculty-level personal fields (stored on users table)
+                'gender', 'zip_code', 'phone',
+                'emergency_contact_name', 'emergency_contact_relationship',
+                'emergency_contact_number', 'emergency_contact_address',
+            ];
+            $profileFields = [
+                'phone', 'address', 'birth_date', 'nationality',
+                // New student profile fields
+                'gender', 'zip_code',
+                'guardian_name', 'guardian_relationship',
+                'guardian_contact', 'guardian_address',
+            ];
 
-            $userUpdates = array_intersect_key($changes, array_flip($userFields));
+            $userUpdates   = array_intersect_key($changes, array_flip($userFields));
             $profileUpdates = array_intersect_key($changes, array_flip($profileFields));
 
             if (!empty($userUpdates)) {
