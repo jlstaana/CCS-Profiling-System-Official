@@ -62,7 +62,7 @@ function App() {
                   <Route path="/admin" element={<AdminLogin />} />
 
                   {/* Student Routes */}
-                  <Route element={<ProtectedRoute role="student" />}>
+                  <Route element={<ProtectedRoute allowedRoles={['student']} />}>
                     <Route path="/student-dashboard" element={<StudentDashboard />} />
                     <Route path="/student-dashboard/student-info" element={<StudentInfo />} />
                     <Route path="/student-dashboard/instruction" element={<Instruction />} />
@@ -79,7 +79,7 @@ function App() {
                   </Route>
 
                   {/* Faculty Routes */}
-                  <Route element={<ProtectedRoute role="faculty" />}>
+                  <Route element={<ProtectedRoute allowedRoles={['faculty']} />}>
                     <Route path="/faculty-dashboard" element={<FacultyDashboard />} />
                     <Route path="/faculty-dashboard/faculty-info" element={<FacultyInfo />} />
                     <Route path="/faculty-dashboard/instruction" element={<Instruction />} />
@@ -96,7 +96,7 @@ function App() {
                   </Route>
 
                   {/* Admin Routes */}
-                  <Route element={<ProtectedRoute role="admin" />}>
+                  <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
                     <Route path="/admin-dashboard" element={<AdminDashboard />} />
                     <Route path="/admin-dashboard/admin-info" element={<AdminInfo />} />
                     <Route path="/admin-dashboard/approvals" element={<ProfileApprovals />} />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useProfileRequests } from '../../context/ProfileRequestContext';
 import axios from 'axios';
 
@@ -12,6 +12,10 @@ const ProfileApprovals = () => {
     if (filter === 'all') return true;
     return r.currentRole.toLowerCase() === filter;
   });
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
 
   const showFeedback = (type, title, message) => {
     setFeedback({ show: true, type, title, message });

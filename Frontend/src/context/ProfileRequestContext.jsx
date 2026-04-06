@@ -71,10 +71,10 @@ export const ProfileRequestProvider = ({ children }) => {
     try {
       const res = await axios.post(`/admin/profile-requests/${requestId}/approve`);
       setRequests(prev => prev.filter(req => req.id !== requestId));
-      alert(res.data.message || "Request approved!");
+      return res.data;
     } catch (err) {
       console.error("Error approving request:", err);
-      alert(err.response?.data?.message || "Failed to approve request. Please check the logs.");
+      throw err;
     }
   };
 
@@ -82,10 +82,10 @@ export const ProfileRequestProvider = ({ children }) => {
     try {
       const res = await axios.post(`/admin/profile-requests/${requestId}/reject`);
       setRequests(prev => prev.filter(req => req.id !== requestId));
-      alert(res.data.message || "Request rejected.");
+      return res.data;
     } catch (err) {
       console.error("Error rejecting request:", err);
-      alert(err.response?.data?.message || "Failed to reject request.");
+      throw err;
     }
   };
 
