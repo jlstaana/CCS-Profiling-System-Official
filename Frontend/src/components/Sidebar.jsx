@@ -11,7 +11,7 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
     switch(userRole) {
       case 'student':
         return [
-          { path: basePath, icon: '📊', label: 'Dashboard', section: 'main' },
+          { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },
           { path: `${basePath}/events`, icon: '🎉', label: 'Events', section: 'academic' },
@@ -21,7 +21,7 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
         ];
       case 'faculty':
         return [
-          { path: basePath, icon: '📊', label: 'Dashboard', section: 'main' },
+          { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },
           { path: `${basePath}/events`, icon: '🎉', label: 'Events', section: 'academic' },
@@ -31,8 +31,9 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
         ];
       case 'admin':
         return [
-          { path: basePath, icon: '📊', label: 'Dashboard', section: 'main' },
-          { path: `${basePath}/users`, icon: '👥', label: 'Manage Users', section: 'academic' },
+          { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
+          { path: '/users', icon: '👥', label: 'Manage Users', section: 'academic' },
+          { path: '/reports', icon: '📝', label: 'Reports', section: 'main' },
           { path: `${basePath}/approvals`, icon: '✅', label: 'Profile Approvals', section: 'academic' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },

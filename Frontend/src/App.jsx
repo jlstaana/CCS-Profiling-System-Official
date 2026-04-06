@@ -6,6 +6,12 @@ import { MessageProvider } from './context/MessageContext';
 import { ProfileRequestProvider } from './context/ProfileRequestContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoadingFallback from './components/LoadingFallback';
+import { ThemeProvider } from './context/ThemeContext';
+
+// Unified Additions
+const UnifiedDashboard = lazy(() => import('./pages/shared/UnifiedDashboard'));
+const Reports = lazy(() => import('./pages/admin/Reports'));
+const UserDetails = lazy(() => import('./pages/shared/UserDetails'));
 
 // Auth Pages
 const StudentLogin = lazy(() => import('./pages/auth/StudentLogin'));
@@ -42,9 +48,10 @@ const Messages = lazy(() => import('./pages/social/Messages'));
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <SocialProvider>
+    <ThemeProvider>
+      <Router>
+        <AuthProvider>
+          <SocialProvider>
           <MessageProvider>
             <ProfileRequestProvider>
               <Suspense fallback={<LoadingFallback />}>
@@ -107,8 +114,19 @@ function App() {
                     <Route path="/admin-dashboard/settings" element={<Settings />} />
                   </Route>
 
+                  {/* Unified Routes (Part 1, Part 2, Part 6) */}
+                  <Route element={<ProtectedRoute allowedRoles={['admin', 'faculty', 'student']} />}>
+                    <Route path="/dashboard" element={<UnifiedDashboard />} />
+                    <Route path="/users" element={<UsersManagement />} />
+                    <Route path="/users/:id" element={<UserDetails />} />
+                  </Route>
+
+                  <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+                    <Route path="/reports" element={<Reports />} />
+                  </Route>
+
                   {/* Catch all */}
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="*" element={<Navigate to="/dashboard" replace />} />
                 </Routes>
               </Suspense>
             </ProfileRequestProvider>
@@ -116,6 +134,7 @@ function App() {
         </SocialProvider>
       </AuthProvider>
     </Router>
+    </ThemeProvider>
   );
 }
 

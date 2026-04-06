@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import UserRow from './UserRow';
 
 const BLANK_FORM = {
   name: '', email: '', password: '', role: 'student',
@@ -258,44 +259,11 @@ const UsersManagement = () => {
             </thead>
             <tbody>
               {filteredUsers.map(user => (
-                <tr key={user.id} style={styles.tr}>
-                  <td style={styles.td}>
-                    <div style={styles.userInfo}>
-                      <div style={styles.userAvatar}>
-                        {user.profile_pic_base64 ? (
-                          <img src={user.profile_pic_base64} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
-                        ) : (
-                          user.name.charAt(0).toUpperCase()
-                        )}
-                      </div>
-                      <div>
-                        <div style={styles.userName}>{user.name}</div>
-                        <div style={styles.userEmail}>{user.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td style={styles.td}>
-                    <code style={{ fontSize: '13px', color: '#1f2f70', fontWeight: '600' }}>
-                      {user.user_id || user.id}
-                    </code>
-                  </td>
-                  <td style={styles.td}>
-                    <span style={{ ...styles.roleBadge, backgroundColor: getRoleBadgeColor(user.role) }}>
-                      {user.role}
-                    </span>
-                  </td>
-                  <td style={styles.td}>{user.department || '—'}</td>
-                  <td style={styles.td}>{user.course || '—'}</td>
-                  <td style={styles.td}>{new Date(user.created_at).toLocaleDateString()}</td>
-                  <td style={styles.td}>
-                    <button
-                      style={styles.editButton}
-                      onClick={() => { setSelectedUser(user); setShowUserModal(true); }}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
+                <UserRow 
+                  key={user.id} 
+                  user={user} 
+                  onEdit={(u) => { setSelectedUser(u); setShowUserModal(true); }} 
+                />
               ))}
             </tbody>
           </table>

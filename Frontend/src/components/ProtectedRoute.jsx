@@ -2,7 +2,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Layout from './Layout';
 
-const ProtectedRoute = ({ role }) => {
+const ProtectedRoute = ({ allowedRoles }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
@@ -18,8 +18,8 @@ const ProtectedRoute = ({ role }) => {
     return <Navigate to="/" replace />;
   }
 
-  if (role && user.role !== role) {
-    return <Navigate to={`/${user.role}-dashboard`} replace />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
