@@ -12,6 +12,9 @@ import { ThemeProvider } from './context/ThemeContext';
 const UnifiedDashboard = lazy(() => import('./pages/shared/UnifiedDashboard'));
 const Reports = lazy(() => import('./pages/admin/Reports'));
 const UserDetails = lazy(() => import('./pages/shared/UserDetails'));
+const Curriculum = lazy(() => import('./pages/shared/Curriculum'));
+const Grades = lazy(() => import('./pages/shared/Grades'));
+
 
 // Auth Pages
 const StudentLogin = lazy(() => import('./pages/auth/StudentLogin'));
@@ -119,6 +122,8 @@ function App() {
                     <Route path="/dashboard" element={<UnifiedDashboard />} />
                     <Route path="/users" element={<UsersManagement />} />
                     <Route path="/users/:id" element={<UserDetails />} />
+                    <Route path="/curriculum" element={<Curriculum />} />
+                    <Route path="/grades" element={<Grades />} />
                   </Route>
 
                   <Route element={<ProtectedRoute allowedRoles={['admin']} />}>

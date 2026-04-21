@@ -12,6 +12,8 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
       case 'student':
         return [
           { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
+          { path: '/curriculum', icon: '📖', label: 'Curriculum', section: 'academic' },
+          { path: '/grades', icon: '📝', label: 'My Grades', section: 'academic' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },
           { path: `${basePath}/events`, icon: '🎉', label: 'Events', section: 'academic' },
@@ -22,6 +24,8 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
       case 'faculty':
         return [
           { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
+          { path: '/curriculum', icon: '📖', label: 'Curriculum', section: 'academic' },
+          { path: '/grades', icon: '📝', label: 'Encode Grades', section: 'academic' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },
           { path: `${basePath}/events`, icon: '🎉', label: 'Events', section: 'academic' },
@@ -34,6 +38,8 @@ const Sidebar = ({ collapsed, mobileOpen, toggleSidebar, userRole, isMobile }) =
           { path: '/dashboard', icon: '📊', label: 'Dashboard', section: 'main' },
           { path: '/users', icon: '👥', label: 'Manage Users', section: 'academic' },
           { path: '/reports', icon: '📝', label: 'Reports', section: 'main' },
+          { path: '/curriculum', icon: '📖', label: 'Curriculum', section: 'academic' },
+          { path: '/grades', icon: '📝', label: 'Student Grades', section: 'academic' },
           { path: `${basePath}/approvals`, icon: '✅', label: 'Profile Approvals', section: 'academic' },
           { path: `${basePath}/instruction`, icon: '📚', label: 'Instruction', section: 'academic' },
           { path: `${basePath}/scheduling`, icon: '📅', label: 'Scheduling', section: 'academic' },

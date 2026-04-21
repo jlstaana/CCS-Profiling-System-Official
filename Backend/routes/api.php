@@ -93,5 +93,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/violations', [ViolationController::class, 'store']);
     Route::put('/violations/{id}', [ViolationController::class, 'update']);
     Route::delete('/violations/{id}', [ViolationController::class, 'destroy']);
-});
 
+    // Curriculums
+    Route::get('/curriculums', [\App\Http\Controllers\CurriculumController::class, 'index']);
+    Route::post('/curriculums', [\App\Http\Controllers\CurriculumController::class, 'store']);
+    Route::delete('/curriculums/{id}', [\App\Http\Controllers\CurriculumController::class, 'destroy']);
+
+    // Grades
+    Route::get('/grades', [\App\Http\Controllers\GradeController::class, 'index']);
+    Route::post('/grades', [\App\Http\Controllers\GradeController::class, 'store']);
+    Route::delete('/grades/{id}', [\App\Http\Controllers\GradeController::class, 'destroy']);
+});
