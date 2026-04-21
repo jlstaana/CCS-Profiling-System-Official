@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::delete('/curriculums/{id}', [\App\Http\Controllers\CurriculumController::class, 'destroy']);
 
     // Grades
+    Route::post('/grades/batch', [\App\Http\Controllers\GradeController::class, 'batchStore']);
     Route::get('/grades', [\App\Http\Controllers\GradeController::class, 'index']);
     Route::post('/grades', [\App\Http\Controllers\GradeController::class, 'store']);
     Route::delete('/grades/{id}', [\App\Http\Controllers\GradeController::class, 'destroy']);
