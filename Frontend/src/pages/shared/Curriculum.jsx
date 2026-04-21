@@ -3,6 +3,17 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import styles from '../../styles/Dashboard.module.css';
 
+const inputStyle = {
+    padding: '12px 14px',
+    borderRadius: '8px',
+    border: '1px solid #cbd5e1',
+    fontSize: '0.95rem',
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box',
+    transition: 'border-color 0.2s',
+};
+
 const Curriculum = () => {
     const { user } = useAuth();
     const canManage = user?.role === 'admin';
@@ -113,21 +124,25 @@ const Curriculum = () => {
             )}
 
             {showModal && (
-                <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-                    <div style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: 400 }}>
-                        <h3>Add Subject</h3>
-                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                            <input placeholder="Program (e.g. BSIT)" value={form.program} onChange={e => setForm({...form, program: e.target.value})} required />
-                            <input placeholder="Year Level" value={form.year_level} onChange={e => setForm({...form, year_level: e.target.value})} required />
-                            <input placeholder="Semester" value={form.semester} onChange={e => setForm({...form, semester: e.target.value})} required />
-                            <input placeholder="Course Code" value={form.course_code} onChange={e => setForm({...form, course_code: e.target.value})} required />
-                            <input placeholder="Course Title" value={form.course_title} onChange={e => setForm({...form, course_title: e.target.value})} required />
-                            <input type="number" placeholder="Units" value={form.units} onChange={e => setForm({...form, units: e.target.value})} required />
-                            <input placeholder="Prerequisites (Optional)" value={form.prerequisites} onChange={e => setForm({...form, prerequisites: e.target.value})} />
+                <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, animation: 'fadeIn 0.2s ease-out' }}>
+                    <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '16px', width: '100%', maxWidth: '450px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '20px', color: '#2c3e50', fontSize: '1.25rem', fontWeight: '600', borderBottom: '1px solid #edf2f7', paddingBottom: '15px' }}>✨ Add Curriculum Subject</h3>
+                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                            <div style={{ display: 'flex', gap: '14px' }}>
+                                <input style={inputStyle} placeholder="Program (e.g. BSIT)" value={form.program} onChange={e => setForm({...form, program: e.target.value})} required />
+                                <input style={inputStyle} placeholder="Year Level" value={form.year_level} onChange={e => setForm({...form, year_level: e.target.value})} required />
+                            </div>
+                            <input style={inputStyle} placeholder="Semester" value={form.semester} onChange={e => setForm({...form, semester: e.target.value})} required />
+                            <div style={{ display: 'flex', gap: '14px' }}>
+                                <input style={inputStyle} placeholder="Code (ITEW6)" value={form.course_code} onChange={e => setForm({...form, course_code: e.target.value})} required />
+                                <input style={inputStyle} type="number" placeholder="Units" value={form.units} onChange={e => setForm({...form, units: e.target.value})} required />
+                            </div>
+                            <input style={inputStyle} placeholder="Descriptive Title" value={form.course_title} onChange={e => setForm({...form, course_title: e.target.value})} required />
+                            <input style={inputStyle} placeholder="Prerequisites (Optional)" value={form.prerequisites} onChange={e => setForm({...form, prerequisites: e.target.value})} />
                             
-                            <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-                                <button type="submit" className={styles.actionButton}>Save</button>
-                                <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '15px' }}>
+                                <button type="button" onClick={() => setShowModal(false)} style={{ padding: '10px 18px', backgroundColor: '#f1f5f9', color: '#475569', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '500', transition: 'background-color 0.2s' }} onMouseOver={e => e.target.style.backgroundColor = '#e2e8f0'} onMouseOut={e => e.target.style.backgroundColor = '#f1f5f9'}>Cancel</button>
+                                <button type="submit" style={{ padding: '10px 18px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '500', transition: 'background-color 0.2s', boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)' }} onMouseOver={e => e.target.style.backgroundColor = '#2563eb'} onMouseOut={e => e.target.style.backgroundColor = '#3b82f6'}>Save Subject</button>
                             </div>
                         </form>
                     </div>
