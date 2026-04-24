@@ -44,10 +44,7 @@ const Scheduling = () => {
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState('');
 
-  // ── Course modal ──────────────────────────────────────────
-  const [showCourseModal, setShowCourseModal] = useState(false);
-  const [courseForm, setCourseForm]           = useState({ code: '', title: '' });
-  const [courseError, setCourseError]         = useState('');
+  // ── Course modal (Removed) ──────────────────────────────────
 
   /* ──────────────────────────────── data fetching */
   const fetchData = async () => {
@@ -140,18 +137,6 @@ const Scheduling = () => {
     } catch (e) { setError('Failed to delete.'); }
   };
 
-  const handleCreateCourse = async () => {
-    if (!courseForm.code.trim() || !courseForm.title.trim()) {
-      setCourseError('Code and title are required.'); return;
-    }
-    try {
-      await axios.post('/courses', courseForm);
-      setCourseForm({ code: '', title: '' });
-      setShowCourseModal(false);
-      fetchData();
-    } catch (e) { setCourseError(e.response?.data?.message || 'Failed to create course.'); }
-  };
-
   /* ──────────────────────────────── render */
   return (
     <div>
@@ -160,7 +145,6 @@ const Scheduling = () => {
         <h1 style={S.pageTitle}>Class Scheduling</h1>
         {canEdit && (
           <div style={{ display: 'flex', gap: 10 }}>
-            <button style={S.btn2} onClick={() => { setCourseError(''); setShowCourseModal(true); }}>+ New Course</button>
             <button style={S.btn}  onClick={() => openNew('Monday', '7:00 AM')}>+ Add Schedule</button>
           </div>
         )}
@@ -345,37 +329,6 @@ const Scheduling = () => {
         </div>
       )}
 
-      {/* ── Course Modal ── */}
-      {showCourseModal && (
-        <div style={S.overlay}>
-          <div style={{ ...S.modal, maxWidth: 420 }}>
-            <div style={S.modalHead}>
-              <h3 style={{ margin: 0 }}>Create Course</h3>
-              <button onClick={() => setShowCourseModal(false)} style={S.close}>×</button>
-            </div>
-            <div style={S.modalBody}>
-              {courseError && <div style={S.errBox}>{courseError}</div>}
-              <div style={S.fg}>
-                <label style={S.label}>Course Code *</label>
-                <input id="course-code" style={S.inp} value={courseForm.code}
-                  onChange={e => setCourseForm(p => ({ ...p, code: e.target.value }))}
-                  placeholder="e.g. CS 301" />
-              </div>
-              <div style={S.fg}>
-                <label style={S.label}>Course Title *</label>
-                <input id="course-title" style={S.inp} value={courseForm.title}
-                  onChange={e => setCourseForm(p => ({ ...p, title: e.target.value }))}
-                  placeholder="e.g. Database Systems" />
-              </div>
-            </div>
-            <div style={S.modalFoot}>
-              <button onClick={() => setShowCourseModal(false)} style={S.cancelBtn}>Cancel</button>
-              <button id="create-course-btn" onClick={handleCreateCourse} style={S.saveBtn}>Create Course</button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* ── Legend ── */}
       <div style={S.legend}>
         {YEAR_LEVELS.map(y => (
@@ -393,7 +346,6 @@ const S = {
   header:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
   pageTitle:   { fontSize: 24, fontWeight: 600, color: '#1f2f70', margin: 0 },
   btn:         { padding: '9px 18px', backgroundColor: '#1cc88a', color: 'white', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' },
-  btn2:        { padding: '9px 18px', backgroundColor: '#1f2f70', color: 'white', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' },
   // Filter bar
   filters:     { display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20, flexWrap: 'wrap' },
   filterGroup: { display: 'flex', flexDirection: 'column', gap: 4 },
