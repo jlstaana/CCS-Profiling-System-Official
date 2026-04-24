@@ -246,6 +246,9 @@ const Scheduling = () => {
                     {slot && (
                       <div style={S.slotContent}>
                         <div style={S.slotCourse}>{course?.code || 'Course'}</div>
+                        <div style={{ fontSize: 10.5, color: '#ffea00', fontWeight: 800, margin: '2px 0', textShadow: '0 1px 2px rgba(0,0,0,0.2)' }}>
+                          ⏰ {slot.time_start} - {slot.time_end}
+                        </div>
                         <div style={S.slotMeta}>
                           {slot.program} {slot.year_level ? slot.year_level.replace(' Year', 'Y') : ''}{slot.section ? ` · §${slot.section}` : ''}
                         </div>

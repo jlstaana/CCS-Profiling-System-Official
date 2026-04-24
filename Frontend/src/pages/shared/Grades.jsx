@@ -45,18 +45,25 @@ const Grades = () => {
         const parts = [p, m, f].filter(val => val !== '' && val !== null && !isNaN(val));
         if (parts.length === 0) return '';
         const sum = parts.reduce((acc, val) => acc + parseFloat(val), 0);
-        return (sum / parts.length).toFixed(2);
+        const avg = Math.round(sum / parts.length);
+        
+        if (avg >= 96) return '1.00';
+        if (avg >= 92) return '1.25';
+        if (avg >= 88) return '1.50';
+        if (avg >= 84) return '1.75';
+        if (avg >= 80) return '2.00';
+        if (avg >= 75) return '2.25';
+        if (avg >= 70) return '2.50';
+        if (avg >= 65) return '2.75';
+        if (avg >= 60) return '3.00';
+        return '5.00';
     };
 
-    const getRemarks = (avg) => {
-        if (!avg) return '';
-        const grade = parseFloat(avg);
-        // Assuming 1.0 to 5.0 scale where lower is better
-        if (grade <= 3.0 && grade >= 1.0) return 'Passed';
-        if (grade > 3.0 && grade <= 5.0) return 'Failed';
-        // Zero-based grading scale typically uses 50% as passing
-        if (grade >= 50) return 'Passed';
-        return 'Failed';
+    const getRemarks = (pointGrade) => {
+        if (!pointGrade) return '';
+        if (['INC', 'OD', 'UD'].includes(pointGrade)) return pointGrade;
+        if (pointGrade === '5.00') return 'FAILED';
+        return 'PASSED';
     };
 
     const handleGradeChange = (studentId, field, value) => {
@@ -67,16 +74,16 @@ const Grades = () => {
         });
     };
 
-    const prepareBatchData = () => {
         const payload = [];
         students.forEach(student => {
             const data = batchGrades[student.id];
-            if (data && (data.prelim || data.midterm || data.finals)) {
+            if (data && (data.prelim || data.midterm || data.finals || data.final_grade)) {
                 payload.push({
                     student_id: student.id,
                     prelim: data.prelim || null,
                     midterm: data.midterm || null,
-                    finals: data.finals || null
+                    finals: data.finals || null,
+                    final_grade: data.final_grade || null
                 });
             }
         });
@@ -137,6 +144,7 @@ const Grades = () => {
                             prelim: existing?.prelim || '',
                             midterm: existing?.midterm || '',
                             finals: existing?.finals || '',
+                            final_grade: ['INC', 'OD', 'UD'].includes(existing?.grade) ? existing.grade : ''
                         };
                     });
                     setBatchGrades(loadedGrades);
@@ -199,24 +207,32 @@ const Grades = () => {
                                     </thead>
                                     <tbody>
                                         {students.map(student => {
-                                            const sGrades = batchGrades[student.id] || { prelim: '', midterm: '', finals: '' };
-                                            const computed = calculateFinal(sGrades.prelim, sGrades.midterm, sGrades.finals);
+                                            const sGrades = batchGrades[student.id] || { prelim: '', midterm: '', finals: '', final_grade: '' };
+                                            const computed = sGrades.final_grade || calculateFinal(sGrades.prelim, sGrades.midterm, sGrades.finals);
                                             const rem = getRemarks(computed);
                                             return (
                                                 <tr key={student.id} style={{ borderBottom: '1px solid #e3e6f0' }}>
                                                     <td style={{ padding: 12 }}><strong>{student.name}</strong></td>
                                                     <td style={{ padding: 12 }}>{student.course || 'N/A'}</td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.prelim} onChange={e => handleGradeChange(student.id, 'prelim', e.target.value)} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2' }} />
+                                                        <input type="number" step="0.01" value={sGrades.prelim} onChange={e => handleGradeChange(student.id, 'prelim', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
                                                     </td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.midterm} onChange={e => handleGradeChange(student.id, 'midterm', e.target.value)} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2' }} />
+                                                        <input type="number" step="0.01" value={sGrades.midterm} onChange={e => handleGradeChange(student.id, 'midterm', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
                                                     </td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.finals} onChange={e => handleGradeChange(student.id, 'finals', e.target.value)} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2' }} />
+                                                        <input type="number" step="0.01" value={sGrades.finals} onChange={e => handleGradeChange(student.id, 'finals', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
                                                     </td>
-                                                    <td style={{ padding: 12, fontWeight: 'bold' }}>{computed}</td>
-                                                    <td style={{ padding: 12, color: rem === 'Passed' ? 'green' : (rem === 'Failed' ? 'red' : 'inherit') }}>{rem}</td>
+                                                    <td style={{ padding: 12, fontWeight: 'bold' }}>
+                                                        <select value={sGrades.final_grade || ''} onChange={e => handleGradeChange(student.id, 'final_grade', e.target.value)} style={{ padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', marginRight: 10 }}>
+                                                            <option value="">Auto Convert ({calculateFinal(sGrades.prelim, sGrades.midterm, sGrades.finals) || '-'})</option>
+                                                            <option value="INC">INC</option>
+                                                            <option value="OD">OD</option>
+                                                            <option value="UD">UD</option>
+                                                        </select>
+                                                        <span style={{ color: '#1f2f70', fontSize: '1.1em' }}>{computed}</span>
+                                                    </td>
+                                                    <td style={{ padding: 12, fontWeight: 700, color: rem === 'PASSED' ? '#1cc88a' : (rem === 'FAILED' ? '#e74a3b' : '#f6c23e') }}>{rem}</td>
                                                 </tr>
                                             );
                                         })}
@@ -253,7 +269,7 @@ const Grades = () => {
                                         <td style={{ padding: 12 }}>{g.midterm || '-'}</td>
                                         <td style={{ padding: 12 }}>{g.finals || '-'}</td>
                                         <td style={{ padding: 12 }}><strong>{g.grade || '-'}</strong></td>
-                                        <td style={{ padding: 12, color: g.remarks === 'Passed' ? 'green' : (g.remarks === 'Failed' ? 'red' : 'inherit') }}>{g.remarks || '-'}</td>
+                                        <td style={{ padding: 12, fontWeight: 700, color: g.remarks === 'PASSED' ? '#1cc88a' : (g.remarks === 'FAILED' ? '#e74a3b' : '#f6c23e') }}>{g.remarks || '-'}</td>
                                         <td style={{ padding: 12, fontSize: '0.9em', color: '#858796' }}>{g.semester} ({g.academic_year})</td>
                                     </tr>
                                 ))}

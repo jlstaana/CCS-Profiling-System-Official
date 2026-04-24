@@ -36,6 +36,7 @@ class GradeController extends Controller
             'grades.*.prelim' => 'nullable|numeric',
             'grades.*.midterm' => 'nullable|numeric',
             'grades.*.finals' => 'nullable|numeric',
+            'grades.*.final_grade' => 'nullable|string',
         ]);
 
         $faculty_id = $request->user()->id;
@@ -47,32 +48,39 @@ class GradeController extends Controller
             $prelim = $gradeData['prelim'] ?? null;
             $midterm = $gradeData['midterm'] ?? null;
             $finals = $gradeData['finals'] ?? null;
+            $override_grade = $gradeData['final_grade'] ?? null;
 
             $computed = null;
             $remarks = null;
-            $count = 0;
-            $sum = 0;
 
-            if ($prelim !== null) { $sum += $prelim; $count++; }
-            if ($midterm !== null) { $sum += $midterm; $count++; }
-            if ($finals !== null) { $sum += $finals; $count++; }
+            if (in_array($override_grade, ['INC', 'OD', 'UD'])) {
+                $computed = $override_grade;
+                if ($override_grade === 'INC') $remarks = 'INC';
+                if ($override_grade === 'OD') $remarks = 'OD';
+                if ($override_grade === 'UD') $remarks = 'UD';
+            } else {
+                $count = 0;
+                $sum = 0;
 
-            if ($count > 0) {
-                // Determine grade scale (Assuming 1.0 - 5.0 system in PH where lower is better, or 1-100 where higher is better).
-                // Usually grading average is simple average of prelim, midterm, final. Let's do simple average.
-                // Or maybe the frontend computes it and sends it? The prompt says "there should be automatic calculation".
-                // Doing it in backend ensures validity.
-                $computed = round($sum / $count, 2);
-                
-                // Zero-based grading typically considers 50% as the passing mark (which maps to 3.0 depending on the school's transmutation table).
-                if ($computed <= 3.0 && $computed >= 1.0) {
-                     $remarks = 'Passed';
-                } elseif ($computed > 3.0 && $computed <= 5.0) {
-                     $remarks = 'Failed';
-                } else if ($computed >= 50) { // Changed to 50 for zero-based passing criteria
-                     $remarks = 'Passed';
-                } else {
-                     $remarks = 'Failed';
+                if ($prelim !== null) { $sum += $prelim; $count++; }
+                if ($midterm !== null) { $sum += $midterm; $count++; }
+                if ($finals !== null) { $sum += $finals; $count++; }
+
+                if ($count > 0) {
+                    $average = round($sum / $count);
+                    
+                    if ($average >= 96) $computed = '1.00';
+                    elseif ($average >= 92) $computed = '1.25';
+                    elseif ($average >= 88) $computed = '1.50';
+                    elseif ($average >= 84) $computed = '1.75';
+                    elseif ($average >= 80) $computed = '2.00';
+                    elseif ($average >= 75) $computed = '2.25';
+                    elseif ($average >= 70) $computed = '2.50';
+                    elseif ($average >= 65) $computed = '2.75';
+                    elseif ($average >= 60) $computed = '3.00';
+                    else $computed = '5.00';
+
+                    $remarks = ($computed === '5.00') ? 'FAILED' : 'PASSED';
                 }
             }
 
