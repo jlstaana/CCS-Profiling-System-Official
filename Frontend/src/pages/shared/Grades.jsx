@@ -18,6 +18,21 @@ const Grades = () => {
     const [academicYear, setAcademicYear] = useState('2023-2024');
     const [batchGrades, setBatchGrades] = useState({});
     const [saving, setSaving] = useState(false);
+    
+    // Privacy & Security
+    const [privacyMode, setPrivacyMode] = useState(true);
+    const [isSecureVerified, setIsSecureVerified] = useState(user?.role !== 'admin');
+    const [pinInput, setPinInput] = useState('');
+    const [showPinError, setShowPinError] = useState(false);
+
+    const handleVerify = () => {
+        if (pinInput === 'admin123') { // Demo security PIN
+            setIsSecureVerified(true);
+            setShowPinError(false);
+        } else {
+            setShowPinError(true);
+        }
+    };
 
     const fetchData = async () => {
         try {
@@ -162,13 +177,30 @@ const Grades = () => {
     return (
         <div style={{ padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                <h2>📝 Grades Management</h2>
-                {canEncode && !isEncoding && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <h2>📝 Grades Management</h2>
+                    {isSecureVerified && (
+                        <button 
+                            onClick={() => setPrivacyMode(!privacyMode)}
+                            style={{ 
+                                padding: '6px 12px', borderRadius: '20px', border: 'none', 
+                                backgroundColor: privacyMode ? '#e74a3b' : '#f8f9fc', 
+                                color: privacyMode ? 'white' : '#5a5c69', 
+                                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', 
+                                fontWeight: '700', fontSize: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                transition: 'all 0.3s'
+                            }}
+                        >
+                            {privacyMode ? '🙈 Privacy Mode ON' : '👁️ Privacy Mode OFF'}
+                        </button>
+                    )}
+                </div>
+                {canEncode && !isEncoding && isSecureVerified && (
                     <button className={styles.actionButton} onClick={() => setIsEncoding(true)}>
                         + Encode Grades (Batch)
                     </button>
                 )}
-                {canEncode && isEncoding && (
+                {canEncode && isEncoding && isSecureVerified && (
                     <div style={{ display: 'flex', gap: 10 }}>
                         <button className={styles.actionButton} onClick={handleBatchSave} disabled={saving} style={{ backgroundColor: '#1cc88a' }}>
                             {saving ? 'Saving...' : 'Save All Grades'}
@@ -180,7 +212,32 @@ const Grades = () => {
                 )}
             </div>
 
-            {loading ? <p>Loading...</p> : (
+            {!isSecureVerified ? (
+                <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '12px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', maxWidth: '500px', margin: '40px auto' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🔒</div>
+                    <h3 style={{ color: '#1f2f70', marginBottom: '8px' }}>Security Verification Required</h3>
+                    <p style={{ color: '#858796', fontSize: '14px', marginBottom: '24px' }}>
+                        Student academic records are protected. Please enter your Admin Security PIN to access this module.
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+                        <input 
+                            type="password" 
+                            placeholder="Enter PIN (Demo: admin123)" 
+                            value={pinInput}
+                            onChange={e => setPinInput(e.target.value)}
+                            onKeyDown={e => e.key === 'Enter' && handleVerify()}
+                            style={{ padding: '12px', borderRadius: '8px', border: '1px solid #d1d3e2', width: '250px', textAlign: 'center', fontSize: '16px', letterSpacing: '4px' }}
+                        />
+                        {showPinError && <span style={{ color: '#e74a3b', fontSize: '12px', fontWeight: 'bold' }}>Invalid Security PIN</span>}
+                        <button 
+                            onClick={handleVerify}
+                            style={{ padding: '12px 32px', backgroundColor: '#1f2f70', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', marginTop: '8px', width: '250px' }}
+                        >
+                            Verify Access
+                        </button>
+                    </div>
+                </div>
+            ) : loading ? <p>Loading...</p> : (
                 isEncoding && canEncode ? (
                     <div style={{ backgroundColor: 'white', padding: 20, borderRadius: 10 }}>
                         <div style={{ display: 'flex', gap: 15, marginBottom: 20, flexWrap: 'wrap' }}>
@@ -213,27 +270,49 @@ const Grades = () => {
                                             const rem = getRemarks(computed);
                                             return (
                                                 <tr key={student.id} style={{ borderBottom: '1px solid #e3e6f0' }}>
-                                                    <td style={{ padding: 12 }}><strong>{student.name}</strong></td>
+                                                    <td style={{ padding: 12 }}>
+                                                        {privacyMode ? (
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                                <span style={{ padding: '4px 8px', backgroundColor: '#f8f9fc', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold', color: '#858796' }}>
+                                                                    {student.user_id || 'HIDDEN'}
+                                                                </span>
+                                                            </div>
+                                                        ) : (
+                                                            <strong>{student.name}</strong>
+                                                        )}
+                                                    </td>
                                                     <td style={{ padding: 12 }}>{student.course || 'N/A'}</td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.prelim} onChange={e => handleGradeChange(student.id, 'prelim', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        {privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (
+                                                            <input type="number" step="0.01" value={sGrades.prelim} onChange={e => handleGradeChange(student.id, 'prelim', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        )}
                                                     </td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.midterm} onChange={e => handleGradeChange(student.id, 'midterm', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        {privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (
+                                                            <input type="number" step="0.01" value={sGrades.midterm} onChange={e => handleGradeChange(student.id, 'midterm', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        )}
                                                     </td>
                                                     <td style={{ padding: 12 }}>
-                                                        <input type="number" step="0.01" value={sGrades.finals} onChange={e => handleGradeChange(student.id, 'finals', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        {privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (
+                                                            <input type="number" step="0.01" value={sGrades.finals} onChange={e => handleGradeChange(student.id, 'finals', e.target.value)} disabled={!!sGrades.final_grade} style={{ width: 70, padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', opacity: sGrades.final_grade ? 0.5 : 1 }} />
+                                                        )}
                                                     </td>
                                                     <td style={{ padding: 12, fontWeight: 'bold' }}>
-                                                        <select value={sGrades.final_grade || ''} onChange={e => handleGradeChange(student.id, 'final_grade', e.target.value)} style={{ padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', marginRight: 10 }}>
-                                                            <option value="">Auto Convert ({calculateFinal(sGrades.prelim, sGrades.midterm, sGrades.finals) || '-'})</option>
-                                                            <option value="INC">INC</option>
-                                                            <option value="OD">OD</option>
-                                                            <option value="UD">UD</option>
-                                                        </select>
-                                                        <span style={{ color: '#1f2f70', fontSize: '1.1em' }}>{computed}</span>
+                                                        {privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (
+                                                            <>
+                                                                <select value={sGrades.final_grade || ''} onChange={e => handleGradeChange(student.id, 'final_grade', e.target.value)} style={{ padding: 6, borderRadius: 4, border: '1px solid #d1d3e2', marginRight: 10 }}>
+                                                                    <option value="">Auto Convert ({calculateFinal(sGrades.prelim, sGrades.midterm, sGrades.finals) || '-'})</option>
+                                                                    <option value="INC">INC</option>
+                                                                    <option value="OD">OD</option>
+                                                                    <option value="UD">UD</option>
+                                                                </select>
+                                                                <span style={{ color: '#1f2f70', fontSize: '1.1em' }}>{computed}</span>
+                                                            </>
+                                                        )}
                                                     </td>
-                                                    <td style={{ padding: 12, fontWeight: 700, color: rem === 'PASSED' ? '#1cc88a' : (rem === 'FAILED' ? '#e74a3b' : '#f6c23e') }}>{rem}</td>
+                                                    <td style={{ padding: 12, fontWeight: 700, color: privacyMode ? '#b7b9cc' : (rem === 'PASSED' ? '#1cc88a' : (rem === 'FAILED' ? '#e74a3b' : '#f6c23e')) }}>
+                                                        {privacyMode ? '***' : rem}
+                                                    </td>
                                                 </tr>
                                             );
                                         })}
@@ -264,13 +343,25 @@ const Grades = () => {
                             <tbody>
                                 {grades.map(g => (
                                     <tr key={g.id} style={{ borderBottom: '1px solid #e3e6f0' }}>
-                                        {user?.role !== 'student' && <td style={{ padding: 12 }}>{g.student?.name}</td>}
+                                        {user?.role !== 'student' && (
+                                            <td style={{ padding: 12 }}>
+                                                {privacyMode ? (
+                                                    <code style={{ padding: '2px 6px', backgroundColor: '#f8f9fc', borderRadius: '4px', fontSize: '12px', fontWeight: 'bold', color: '#858796' }}>
+                                                        {g.student?.user_id || 'HIDDEN'}
+                                                    </code>
+                                                ) : (
+                                                    g.student?.name
+                                                )}
+                                            </td>
+                                        )}
                                         <td style={{ padding: 12 }}>{g.course?.code}</td>
-                                        <td style={{ padding: 12 }}>{g.prelim || '-'}</td>
-                                        <td style={{ padding: 12 }}>{g.midterm || '-'}</td>
-                                        <td style={{ padding: 12 }}>{g.finals || '-'}</td>
-                                        <td style={{ padding: 12 }}><strong>{g.grade || '-'}</strong></td>
-                                        <td style={{ padding: 12, fontWeight: 700, color: g.remarks === 'PASSED' ? '#1cc88a' : (g.remarks === 'FAILED' ? '#e74a3b' : '#f6c23e') }}>{g.remarks || '-'}</td>
+                                        <td style={{ padding: 12 }}>{privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (g.prelim || '-')}</td>
+                                        <td style={{ padding: 12 }}>{privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (g.midterm || '-')}</td>
+                                        <td style={{ padding: 12 }}>{privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (g.finals || '-')}</td>
+                                        <td style={{ padding: 12 }}><strong>{privacyMode ? <span style={{ color: '#b7b9cc' }}>***</span> : (g.grade || '-')}</strong></td>
+                                        <td style={{ padding: 12, fontWeight: 700, color: privacyMode ? '#b7b9cc' : (g.remarks === 'PASSED' ? '#1cc88a' : (g.remarks === 'FAILED' ? '#e74a3b' : '#f6c23e')) }}>
+                                            {privacyMode ? '***' : (g.remarks || '-')}
+                                        </td>
                                         <td style={{ padding: 12, fontSize: '0.9em', color: '#858796' }}>{g.semester} ({g.academic_year})</td>
                                     </tr>
                                 ))}
