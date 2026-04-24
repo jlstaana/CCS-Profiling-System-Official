@@ -14,6 +14,7 @@ const AdminDashboard = () => {
     { label: 'Total Users', value: '0', icon: '👥', color: '#36b9cc', change: '+0%' },
   ]);
   const [recentUsers, setRecentUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const { requests, approveRequest, rejectRequest, fetchRequests } = useProfileRequests();
 
   const quickActions = [
@@ -150,7 +151,7 @@ const AdminDashboard = () => {
                     <span>{userItem.department}</span>
                   </div>
                 </div>
-                <button className={styles.viewProfileBtn}>View Profile</button>
+                <button className={styles.viewProfileBtn} onClick={() => setSelectedUser(userItem)}>View Profile</button>
               </div>
             ))}
           </div>
@@ -202,6 +203,61 @@ const AdminDashboard = () => {
           </div>
         </article>
       </section>
+
+      {selectedUser && (
+        <div style={{
+          position: 'fixed', inset: 0, backgroundColor: 'rgba(31, 47, 112, 0.4)', backdropFilter: 'blur(5px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1200, padding: '20px'
+        }} onClick={() => setSelectedUser(null)}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '18px', width: '100%', maxWidth: '400px', padding: '24px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.15)', animation: 'fadeUp 0.3s ease'
+          }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' }}>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '16px', backgroundColor: 'linear-gradient(135deg, var(--primary), var(--secondary))',
+                  color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', overflow: 'hidden',
+                  boxShadow: '0 4px 10px rgba(78, 115, 223, 0.2)', backgroundColor: '#1f2f70'
+                }}>
+                  {selectedUser.profilePic ? (
+                    <img src={selectedUser.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    selectedUser.name?.charAt(0) || 'U'
+                  )}
+                </div>
+                <div>
+                  <h3 style={{ margin: '0 0 4px', fontSize: '1.25rem', color: '#1f2f70', fontWeight: '800' }}>{selectedUser.name}</h3>
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: '10px', fontWeight: '800', padding: '4px 8px', borderRadius: '12px', color: 'white', backgroundColor: selectedUser.role === 'student' ? '#4e73df' : '#1cc88a', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      {selectedUser.role}
+                    </span>
+                    <code style={{ fontSize: '11px', color: '#858796', fontWeight: '700' }}>{selectedUser.user_id || selectedUser.id}</code>
+                  </div>
+                </div>
+              </div>
+              <button onClick={() => setSelectedUser(null)} style={{ background: 'none', border: 'none', fontSize: '24px', color: '#b7b9cc', cursor: 'pointer', padding: 0 }}>&times;</button>
+            </div>
+            
+            <div style={{ display: 'grid', gap: '16px', backgroundColor: '#f8f9fc', padding: '16px', borderRadius: '12px' }}>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#858796', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.05em' }}>Department</div>
+                <div style={{ fontSize: '14px', color: '#1f2f70', fontWeight: '600' }}>{selectedUser.department}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: '700', color: '#858796', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.05em' }}>Joined Date</div>
+                <div style={{ fontSize: '14px', color: '#1f2f70', fontWeight: '600' }}>{selectedUser.date}</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
+              <Link to="/admin-dashboard/users" style={{ flex: 1, textAlign: 'center', padding: '12px', backgroundColor: '#1f2f70', color: 'white', borderRadius: '10px', textDecoration: 'none', fontSize: '13px', fontWeight: '700', transition: 'all 0.2s' }}>
+                Go to User Management →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

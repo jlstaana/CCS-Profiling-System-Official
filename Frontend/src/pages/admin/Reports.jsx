@@ -19,34 +19,53 @@ function downloadCSV(filename, headers, rows) {
 /* ── stat card ────────────────────────────────────────── */
 const StatCard = ({ icon, label, value, color, sub }) => (
   <div style={{
-    background: `linear-gradient(135deg, ${color}18, ${color}08)`,
-    border: `1.5px solid ${color}30`,
-    borderRadius: 16, padding: '20px 22px',
-    display: 'flex', alignItems: 'center', gap: 16, flex: '1 1 180px',
-    boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
-  }}>
+    background: `linear-gradient(145deg, #ffffff, #f8f9fc)`,
+    border: `1px solid rgba(255,255,255,0.8)`,
+    borderRadius: '24px', padding: '24px',
+    display: 'flex', alignItems: 'center', gap: '20px', flex: '1 1 240px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,1)',
+    position: 'relative', overflow: 'hidden',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+  }} className="stat-card">
     <div style={{
-      width: 52, height: 52, borderRadius: 14,
-      background: `linear-gradient(135deg, ${color}, ${color}bb)`,
+      position: 'absolute', top: '-30px', right: '-30px', width: '120px', height: '120px',
+      background: `radial-gradient(circle, ${color}15 0%, transparent 70%)`, borderRadius: '50%'
+    }} />
+    <div style={{
+      width: '64px', height: '64px', borderRadius: '18px',
+      background: `linear-gradient(135deg, ${color}, ${color}cc)`,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: 24, flexShrink: 0, boxShadow: `0 4px 12px ${color}40`,
+      fontSize: '28px', flexShrink: 0, boxShadow: `0 8px 24px ${color}40`,
+      color: 'white', position: 'relative', zIndex: 1
     }}>{icon}</div>
-    <div>
-      <div style={{ fontSize: 26, fontWeight: 800, color: '#1f2f70', lineHeight: 1 }}>{fmt(value)}</div>
-      <div style={{ fontSize: 13, fontWeight: 600, color: '#5a5c69', marginTop: 2 }}>{label}</div>
-      {sub && <div style={{ fontSize: 11, color: '#858796', marginTop: 2 }}>{sub}</div>}
+    <div style={{ zIndex: 1, flex: 1 }}>
+      <div style={{ fontSize: '32px', fontWeight: 800, color: '#1f2f70', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '4px' }}>{fmt(value)}</div>
+      <div style={{ fontSize: '13px', fontWeight: 700, color: '#858796', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
+      {sub && <div style={{ fontSize: '12px', color: '#aeb1be', marginTop: '6px', fontWeight: 600 }}>{sub}</div>}
     </div>
   </div>
 );
 
 /* ── mini bar ─────────────────────────────────────────── */
 const Bar = ({ label, val, max, color }) => (
-  <div style={{ marginBottom: 10 }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, fontWeight: 600, color: '#5a5c69', marginBottom: 4 }}>
-      <span>{label}</span><span style={{ color }}>{val}</span>
+  <div style={{ marginBottom: '16px' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+      <span style={{ fontSize: '13px', fontWeight: 700, color: '#5a5c69' }}>{label}</span>
+      <span style={{ fontSize: '12px', fontWeight: 800, color, backgroundColor: `${color}15`, padding: '3px 10px', borderRadius: '12px' }}>{fmt(val)}</span>
     </div>
-    <div style={{ height: 8, borderRadius: 99, background: '#e9ecef', overflow: 'hidden' }}>
-      <div style={{ height: '100%', borderRadius: 99, width: `${Math.round((val / (max||1)) * 100)}%`, background: `linear-gradient(90deg, ${color}, ${color}aa)`, transition: 'width .6s ease' }} />
+    <div style={{ height: '10px', borderRadius: '99px', background: '#f0f2f5', overflow: 'hidden', boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.06)' }}>
+      <div style={{ 
+        height: '100%', borderRadius: '99px', width: `${Math.round((val / (max||1)) * 100)}%`, 
+        background: `linear-gradient(90deg, ${color}, ${color}cc)`, 
+        transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative'
+      }}>
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
+          animation: 'shimmer 2s infinite linear'
+        }} />
+      </div>
     </div>
   </div>
 );
@@ -203,49 +222,63 @@ const Reports = () => {
   );
 
   return (
-    <div style={{ padding: '4px 0' }}>
+    <div style={{ padding: '10px 0', maxWidth: '1400px', margin: '0 auto' }}>
       <style>{`
-        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
-        .rpt-card { animation: fadeUp .35s ease both; }
-        .rpt-btn:hover { opacity: .88; transform: translateY(-1px); }
-        .rpt-btn { transition: all .2s; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .rpt-card { animation: fadeUp .4s cubic-bezier(0.4, 0, 0.2, 1) both; transition: all 0.3s ease; }
+        .rpt-card:hover { transform: translateY(-6px); boxShadow: 0 15px 35px rgba(0,0,0,0.08); border-color: transparent; }
+        .rpt-btn { transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .rpt-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: all 0.5s ease; }
+        .rpt-btn:hover::before { left: 100%; }
+        .rpt-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
       `}</style>
 
       {/* Toast */}
       {toast && (
         <div style={{
-          position:'fixed', top:20, right:24, zIndex:9999,
-          background:'#1f2f70', color:'white', padding:'12px 20px',
-          borderRadius:10, fontWeight:600, fontSize:14,
-          boxShadow:'0 8px 24px rgba(0,0,0,0.18)', animation:'fadeUp .25s ease',
-        }}>{toast}</div>
+          position:'fixed', bottom: 30, right: 30, zIndex: 9999,
+          background: 'linear-gradient(135deg, #1cc88a, #13855c)', color: 'white', padding: '16px 24px',
+          borderRadius: '12px', fontWeight: 700, fontSize: '15px', display: 'flex', alignItems: 'center', gap: '10px',
+          boxShadow: '0 10px 30px rgba(28, 200, 138, 0.3)', animation: 'fadeUp .3s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}>
+          <span style={{ fontSize: '20px' }}>✅</span> {toast.replace('✅ ', '')}
+        </div>
       )}
 
       {/* Header */}
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize:26, fontWeight:800, color:'#1f2f70', margin:'0 0 4px' }}>📈 System Reports</h1>
-        <p style={{ color:'#858796', fontSize:13.5, margin:0 }}>
-          Restricted to Administrators · Last refreshed {new Date().toLocaleTimeString()}
-        </p>
+      <div style={{ marginBottom: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#1f2f70', margin: '0 0 8px', letterSpacing: '-0.02em' }}>Analytics & Reports</h1>
+          <p style={{ color: '#858796', fontSize: '15px', margin: 0, fontWeight: 500 }}>
+            Comprehensive system insights and downloadable records
+          </p>
+        </div>
+        <div style={{ fontSize: '13px', fontWeight: 600, color: '#aeb1be', backgroundColor: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 2px 10px rgba(0,0,0,0.02)' }}>
+          Last refreshed: {new Date().toLocaleTimeString()}
+        </div>
       </div>
 
       {/* ── STAT CARDS ── */}
-      <div style={{ display:'flex', flexWrap:'wrap', gap:14, marginBottom:28 }}>
+      <div style={{ display:'flex', flexWrap:'wrap', gap: '20px', marginBottom: '40px' }}>
         <StatCard icon="👤" label="Total Users"     value={stats?.total_users} color="#4e73df" />
         <StatCard icon="🎒" label="Students"        value={stats?.students}    color="#1cc88a" sub={`${regular} Regular · ${irregular} Irregular`} />
         <StatCard icon="🏫" label="Faculty"         value={stats?.faculty}     color="#36b9cc" />
         <StatCard icon="📚" label="Courses"         value={courses.length}     color="#f6c23e" />
-        <StatCard icon="✅" label="Grades Passed"   value={passed}             color="#1cc88a" />
-        <StatCard icon="❌" label="Grades Failed"   value={failed}             color="#e74a3b" />
+        <StatCard icon="📈" label="Grades Passed"   value={passed}             color="#1cc88a" />
+        <StatCard icon="📉" label="Grades Failed"   value={failed}             color="#e74a3b" />
       </div>
 
       {/* ── ANALYTICS ROW ── */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:18, marginBottom:28 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(320px,1fr))', gap: '24px', marginBottom: '40px' }}>
 
         {/* Grade Distribution */}
         <div style={S.panel}>
-          <div style={S.panelHead}>📊 Grade Distribution</div>
-          <div style={{ padding:'16px 20px' }}>
+          <div style={S.panelHead}>
+            <span style={{ fontSize: '18px', marginRight: '8px' }}>📊</span> Grade Distribution
+          </div>
+          <div style={{ padding:'24px' }}>
             {gradeOrder.map(g => (
               <Bar key={g} label={g === '5.00' ? '5.00 (FAILED)' : g}
                 val={gradeDist[g]} max={maxGradeCt}
@@ -256,9 +289,11 @@ const Reports = () => {
 
         {/* Course Enrollment */}
         <div style={S.panel}>
-          <div style={S.panelHead}>📋 Grades Recorded by Course</div>
-          <div style={{ padding:'16px 20px' }}>
-            {Object.entries(enrollByCourse).map(([code, ct]) => (
+          <div style={S.panelHead}>
+            <span style={{ fontSize: '18px', marginRight: '8px' }}>📋</span> Course Enrollments
+          </div>
+          <div style={{ padding:'24px' }}>
+            {Object.entries(enrollByCourse).sort((a,b) => b[1] - a[1]).map(([code, ct]) => (
               <Bar key={code} label={code} val={ct} max={maxEnroll} color="#4e73df" />
             ))}
           </div>
@@ -266,15 +301,21 @@ const Reports = () => {
 
         {/* Program & Status Breakdown */}
         <div style={S.panel}>
-          <div style={S.panelHead}>🎓 Student Breakdown</div>
-          <div style={{ padding:'16px 20px' }}>
-            <div style={{ marginBottom: 18 }}>
-              <div style={{ fontSize:12, fontWeight:700, color:'#858796', textTransform:'uppercase', letterSpacing:'.06em', marginBottom:10 }}>By Program</div>
+          <div style={S.panelHead}>
+            <span style={{ fontSize: '18px', marginRight: '8px' }}>🎓</span> Demographics Overview
+          </div>
+          <div style={{ padding:'24px' }}>
+            <div style={{ marginBottom: '32px' }}>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#858796', textTransform:'uppercase', letterSpacing:'.1em', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ height: '1px', flex: 1, backgroundColor: '#e3e6f0' }} /> By Program <div style={{ height: '1px', flex: 1, backgroundColor: '#e3e6f0' }} />
+              </div>
               <Bar label="BSIT" val={bsit} max={students.length} color="#4e73df" />
               <Bar label="BSCS" val={bscs} max={students.length} color="#36b9cc" />
             </div>
             <div>
-              <div style={{ fontSize:12, fontWeight:700, color:'#858796', textTransform:'uppercase', letterSpacing:'.06em', marginBottom:10 }}>By Status</div>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#858796', textTransform:'uppercase', letterSpacing:'.1em', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ height: '1px', flex: 1, backgroundColor: '#e3e6f0' }} /> By Status <div style={{ height: '1px', flex: 1, backgroundColor: '#e3e6f0' }} />
+              </div>
               <Bar label="Regular"   val={regular}   max={students.length} color="#1cc88a" />
               <Bar label="Irregular" val={irregular}  max={students.length} color="#f6c23e" />
               <Bar label="Unset"     val={students.length - regular - irregular} max={students.length} color="#858796" />
@@ -284,38 +325,48 @@ const Reports = () => {
       </div>
 
       {/* ── DOWNLOAD REPORT CARDS ── */}
-      <div style={{ marginBottom:10 }}>
-        <div style={{ fontSize:13, fontWeight:700, color:'#858796', textTransform:'uppercase', letterSpacing:'.07em', marginBottom:14 }}>⬇ Download Reports</div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))', gap:16 }}>
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontSize: '15px', fontWeight: 800, color: '#1f2f70', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '20px' }}>⬇️</span> Download Raw Data Exports
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
           {reportCards.map((rc, idx) => (
-            <div key={rc.id} className="rpt-card" style={{ ...S.reportCard, animationDelay: `${idx * 0.07}s` }}>
-              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:12 }}>
+            <div key={rc.id} className="rpt-card" style={{ ...S.reportCard, animationDelay: `${idx * 0.08}s` }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                 <div style={{
-                  width:46, height:46, borderRadius:12, fontSize:22,
-                  background:`linear-gradient(135deg, ${rc.color}, ${rc.color}bb)`,
-                  display:'flex', alignItems:'center', justifyContent:'center',
-                  boxShadow:`0 4px 10px ${rc.color}40`,
+                  width: '56px', height: '56px', borderRadius: '16px', fontSize: '26px',
+                  background: `linear-gradient(135deg, ${rc.color}, ${rc.color}dd)`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: `0 8px 20px ${rc.color}40`, color: 'white', border: `1px solid ${rc.color}`
                 }}>{rc.icon}</div>
                 <span style={{
-                  fontSize:11, fontWeight:700, padding:'3px 10px',
-                  borderRadius:20, background:`${rc.color}18`, color:rc.color,
+                  fontSize: '12px', fontWeight: 800, padding: '4px 12px',
+                  borderRadius: '20px', background: `${rc.color}15`, color: rc.color, border: `1px solid ${rc.color}30`
                 }}>{rc.badge}</span>
               </div>
-              <div style={{ fontWeight:700, fontSize:14, color:'#1f2f70', marginBottom:6 }}>{rc.label}</div>
-              <div style={{ fontSize:12, color:'#858796', marginBottom:16, lineHeight:1.5 }}>{rc.desc}</div>
+              <div style={{ fontWeight: 800, fontSize: '18px', color: '#1f2f70', marginBottom: '8px', letterSpacing: '-0.01em' }}>{rc.label}</div>
+              <div style={{ fontSize: '13px', color: '#858796', marginBottom: '24px', lineHeight: 1.6, minHeight: '40px' }}>{rc.desc}</div>
               <button
                 className="rpt-btn"
                 style={{
-                  width:'100%', padding:'9px 0', borderRadius:8, border:'none', cursor:'pointer',
-                  background:`linear-gradient(135deg, ${rc.color}, ${rc.color}cc)`,
-                  color:'white', fontWeight:700, fontSize:13,
-                  boxShadow:`0 3px 10px ${rc.color}40`,
-                  opacity: generating === rc.id ? .65 : 1,
+                  width: '100%', padding: '12px 0', borderRadius: '12px', border: 'none', cursor: 'pointer',
+                  background: `linear-gradient(135deg, ${rc.color}, ${rc.color}dd)`,
+                  color: 'white', fontWeight: 700, fontSize: '14px', letterSpacing: '0.03em',
+                  boxShadow: `0 4px 15px ${rc.color}40`, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px',
+                  opacity: generating === rc.id ? 0.7 : 1,
                 }}
                 onClick={rc.action}
                 disabled={!!generating}
               >
-                {generating === rc.id ? '⏳ Generating…' : '⬇ Download CSV'}
+                {generating === rc.id ? (
+                  <>
+                    <span style={{ animation: 'spin 1s linear infinite' }}>⏳</span> Generating...
+                  </>
+                ) : (
+                  <>
+                    <span>⬇</span> Export CSV
+                  </>
+                )}
               </button>
             </div>
           ))}
@@ -327,16 +378,18 @@ const Reports = () => {
 
 const S = {
   panel: {
-    background:'white', borderRadius:14, boxShadow:'0 4px 16px rgba(0,0,0,0.06)',
-    overflow:'hidden', border:'1px solid #e3e6f0',
+    background: 'white', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.03)',
+    overflow: 'hidden', border: '1px solid rgba(227, 230, 240, 0.8)',
+    display: 'flex', flexDirection: 'column'
   },
   panelHead: {
-    padding:'14px 20px', borderBottom:'1px solid #e3e6f0',
-    fontWeight:700, fontSize:14, color:'#1f2f70', background:'#f8f9fc',
+    padding: '20px 24px', borderBottom: '1px solid rgba(227, 230, 240, 0.8)',
+    fontWeight: 800, fontSize: '15px', color: '#1f2f70', background: 'linear-gradient(180deg, #f8f9fc 0%, #ffffff 100%)',
+    display: 'flex', alignItems: 'center', letterSpacing: '0.02em'
   },
   reportCard: {
-    background:'white', borderRadius:14, padding:'20px',
-    boxShadow:'0 4px 16px rgba(0,0,0,0.06)', border:'1px solid #e3e6f0',
+    background: 'white', borderRadius: '24px', padding: '24px',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.03)', border: '1px solid rgba(227, 230, 240, 0.8)',
   },
 };
 
