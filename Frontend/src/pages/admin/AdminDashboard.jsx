@@ -37,6 +37,7 @@ const AdminDashboard = () => {
 
       setRecentUsers(d.recent_users.map(u => ({
         id: u.id,
+        user_id: u.user_id,
         name: u.name,
         role: u.role,
         department: u.department || 'CCS',
@@ -138,6 +139,9 @@ const AdminDashboard = () => {
                 <div className={styles.userContent}>
                   <div className={styles.userName}>{userItem.name}</div>
                   <div className={styles.userMeta}>
+                    <code style={{ fontSize: '11px', color: '#1f2f70', fontWeight: '700', marginRight: '6px' }}>
+                      {userItem.user_id || userItem.id}
+                    </code>
                     <span className={styles.roleBadge} style={{
                       backgroundColor: userItem.role === 'student' ? '#4e73df' : '#1cc88a'
                     }}>

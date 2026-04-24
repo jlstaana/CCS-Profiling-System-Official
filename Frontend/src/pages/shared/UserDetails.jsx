@@ -45,7 +45,12 @@ const UserDetails = () => {
           </div>
           <div>
             <h2 style={styles.name}>{user.name}</h2>
-            <p style={styles.role}>{user.role.toUpperCase()}</p>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <p style={styles.role}>{user.role.toUpperCase()}</p>
+              <code style={{ fontSize: '12px', color: '#1f2f70', background: '#f8f9fc', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>
+                {user.user_id || user.id}
+              </code>
+            </div>
           </div>
         </div>
         
