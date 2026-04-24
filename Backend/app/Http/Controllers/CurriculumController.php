@@ -22,6 +22,7 @@ class CurriculumController extends Controller
             'course_title' => 'required|string',
             'units' => 'required|integer',
             'prerequisites' => 'nullable|string',
+            'curriculum_year' => 'nullable|string',
         ]);
 
         $curriculum = Curriculum::create($validated);
@@ -39,6 +40,7 @@ class CurriculumController extends Controller
             'course_title' => 'required|string',
             'units' => 'required|integer',
             'prerequisites' => 'nullable|string',
+            'curriculum_year' => 'nullable|string',
         ]);
         $curriculum->update($validated);
         return response()->json($curriculum);
@@ -62,6 +64,7 @@ class CurriculumController extends Controller
             'subjects.*.course_title' => 'required|string',
             'subjects.*.units' => 'required|integer',
             'subjects.*.prerequisites' => 'nullable|string',
+            'subjects.*.curriculum_year' => 'nullable|string',
         ]);
 
         foreach ($validated['subjects'] as $subject) {

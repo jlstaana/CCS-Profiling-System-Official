@@ -84,7 +84,7 @@ class AdminController extends Controller
     }
 
     public function getUsers() {
-        return response()->json(User::orderBy('created_at', 'desc')->get());
+        return response()->json(User::with('studentProfile')->orderBy('created_at', 'desc')->get());
     }
 
     public function createUser(Request $request) {
@@ -95,6 +95,7 @@ class AdminController extends Controller
             'role'       => 'required|in:student,faculty,admin',
             'department' => 'nullable|string',
             'course'     => 'nullable|string',
+            'student_status' => 'nullable|string|in:Regular,Irregular',
         ]);
 
         $user = User::create([
@@ -106,6 +107,10 @@ class AdminController extends Controller
             'department' => $fields['department'] ?? null,
             'course'     => $fields['course'] ?? null,
         ]);
+
+        if ($user->role === 'student' && isset($fields['student_status'])) {
+            $user->studentProfile()->create(['student_status' => $fields['student_status']]);
+        }
 
         return response()->json($user, 201);
     }
@@ -143,6 +148,14 @@ class AdminController extends Controller
             $data['password'] = bcrypt($request->input('password'));
         }
         $user->update($data);
+
+        if ($user->role === 'student' && $request->has('student_status')) {
+            $user->studentProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['student_status' => $request->input('student_status')]
+            );
+        }
+
         return response()->json($user);
     }
 

@@ -4,7 +4,7 @@ import UserRow from './UserRow';
 
 const BLANK_FORM = {
   name: '', email: '', password: '', role: 'student',
-  department: 'CS', course: '', bio: ''
+  department: 'CS', course: '', bio: '', student_status: 'Regular'
 };
 
 const UsersManagement = () => {
@@ -60,7 +60,8 @@ const UsersManagement = () => {
     const [form, setForm] = useState(isNew ? BLANK_FORM : {
       name: user.name || '', email: user.email || '', password: '',
       role: user.role || 'student', department: user.department || 'CS',
-      course: user.course || '', bio: user.bio || ''
+      course: user.course || '', bio: user.bio || '',
+      student_status: user.student_profile?.student_status || 'Regular'
     });
     const [saving, setSaving] = useState(false);
     const [modalError, setModalError] = useState('');
@@ -148,14 +149,23 @@ const UsersManagement = () => {
               </div>
             </div>
             {form.role === 'student' && (
-              <div style={styles.formGroup}>
-                <label style={styles.label}>Course</label>
-                <select style={styles.select} value={form.course} onChange={set('course')}>
-                  <option value="">Select course...</option>
-                  <option value="BSCS">BSCS</option>
-                  <option value="BSIT">BSIT</option>
-                  <option value="BSIS">BSIS</option>
-                </select>
+              <div style={styles.formRow}>
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Course</label>
+                  <select style={styles.select} value={form.course} onChange={set('course')}>
+                    <option value="">Select course...</option>
+                    <option value="BSCS">BSCS</option>
+                    <option value="BSIT">BSIT</option>
+                    <option value="BSIS">BSIS</option>
+                  </select>
+                </div>
+                <div style={styles.formGroup}>
+                  <label style={styles.label}>Student Status</label>
+                  <select style={styles.select} value={form.student_status} onChange={set('student_status')}>
+                    <option value="Regular">Regular</option>
+                    <option value="Irregular">Irregular</option>
+                  </select>
+                </div>
               </div>
             )}
             <div style={styles.formGroup}>
@@ -253,6 +263,7 @@ const UsersManagement = () => {
                 <th style={styles.th}>Role</th>
                 <th style={styles.th}>Department</th>
                 <th style={styles.th}>Course</th>
+                <th style={styles.th}>Status</th>
                 <th style={styles.th}>Joined</th>
                 <th style={styles.th}>Actions</th>
               </tr>

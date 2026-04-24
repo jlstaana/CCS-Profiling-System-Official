@@ -61,8 +61,19 @@ const Curriculum = () => {
         course_code: '',
         course_title: '',
         units: 3,
-        prerequisites: ''
+        prerequisites: '',
+        curriculum_year: '2024-2025'
     });
+    const [filterYear, setFilterYear] = useState('2024-2025');
+    const [templateYear, setTemplateYear] = useState('2024-2025');
+
+    // Extract unique curriculum years from data for filter dropdown
+    const availableYears = [...new Set(curriculums.map(c => c.curriculum_year).filter(Boolean))];
+    if (!availableYears.includes('2024-2025')) availableYears.push('2024-2025');
+    availableYears.sort().reverse();
+    
+    // Filter display data
+    const filteredCurriculums = curriculums.filter(c => (c.curriculum_year || '2024-2025') === filterYear);
 
     const fetchCurriculums = async () => {
         try {
@@ -87,7 +98,8 @@ const Curriculum = () => {
             course_code: '',
             course_title: '',
             units: 3,
-            prerequisites: ''
+            prerequisites: '',
+            curriculum_year: filterYear || '2024-2025'
         });
         setEditMode(false);
         setEditingId(null);
@@ -102,7 +114,8 @@ const Curriculum = () => {
             course_code: c.course_code,
             course_title: c.course_title,
             units: c.units,
-            prerequisites: c.prerequisites || ''
+            prerequisites: c.prerequisites || '',
+            curriculum_year: c.curriculum_year || '2024-2025'
         });
         setEditingId(c.id);
         setEditMode(true);
@@ -132,7 +145,8 @@ const Curriculum = () => {
         setShowTemplateModal(false);
         try {
             const template = templateName === 'BSIT' ? bsitTemplate : bscsTemplate;
-            await axios.post('/curriculums/bulk', { subjects: template });
+            const subjectsPayload = template.map(subj => ({ ...subj, curriculum_year: templateYear }));
+            await axios.post('/curriculums/bulk', { subjects: subjectsPayload });
             fetchCurriculums();
             alert(`${templateName} template loaded successfully!`);
         } catch (e) {
@@ -156,7 +170,14 @@ const Curriculum = () => {
         <div style={{ padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                 <h2>📚 Curriculum Management</h2>
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                    <select 
+                        value={filterYear} 
+                        onChange={e => setFilterYear(e.target.value)}
+                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none' }}
+                    >
+                        {availableYears.map(yr => <option key={yr} value={yr}>{yr} Curriculum</option>)}
+                    </select>
                     {canManage && (
                         <button className={styles.actionButton} onClick={() => setShowTemplateModal(true)} style={{ backgroundColor: '#10b981' }}>
                             📥 Load Premade Curriculum
@@ -185,7 +206,7 @@ const Curriculum = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {curriculums.map(c => (
+                            {filteredCurriculums.map(c => (
                                 <tr key={c.id} style={{ borderBottom: '1px solid #eee' }}>
                                     <td style={{ padding: '10px 0' }}>{c.program}</td>
                                     <td>{c.year_level} - {c.semester}</td>
@@ -201,9 +222,9 @@ const Curriculum = () => {
                                     )}
                                 </tr>
                             ))}
-                            {curriculums.length === 0 && (
+                            {filteredCurriculums.length === 0 && (
                                 <tr>
-                                    <td colSpan="7" style={{ textAlign: 'center', padding: 20 }}>No subjects found in curriculum.</td>
+                                    <td colSpan="7" style={{ textAlign: 'center', padding: 20 }}>No subjects found for this curriculum year.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -217,10 +238,13 @@ const Curriculum = () => {
                         <h3 style={{ marginTop: 0, marginBottom: '20px', color: '#2c3e50', fontSize: '1.25rem', fontWeight: '600', borderBottom: '1px solid #edf2f7', paddingBottom: '15px' }}>{editMode ? '✏️ Edit Subject' : '✨ Add Curriculum Subject'}</h3>
                         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                             <div style={{ display: 'flex', gap: '14px' }}>
+                                <input style={inputStyle} placeholder="Curriculum Year (e.g. 2024-2025)" value={form.curriculum_year} onChange={e => setForm({...form, curriculum_year: e.target.value})} required title="Curriculum Year" />
                                 <input style={inputStyle} placeholder="Program (e.g. BSIT)" value={form.program} onChange={e => setForm({...form, program: e.target.value})} required />
-                                <input style={inputStyle} placeholder="Year Level" value={form.year_level} onChange={e => setForm({...form, year_level: e.target.value})} required />
                             </div>
-                            <input style={inputStyle} placeholder="Semester" value={form.semester} onChange={e => setForm({...form, semester: e.target.value})} required />
+                            <div style={{ display: 'flex', gap: '14px' }}>
+                                <input style={{...inputStyle, flex: 1}} placeholder="Year Level" value={form.year_level} onChange={e => setForm({...form, year_level: e.target.value})} required />
+                                <input style={{...inputStyle, flex: 1}} placeholder="Semester" value={form.semester} onChange={e => setForm({...form, semester: e.target.value})} required />
+                            </div>
                             <div style={{ display: 'flex', gap: '14px' }}>
                                 <input style={inputStyle} placeholder="Code (ITEW6)" value={form.course_code} onChange={e => setForm({...form, course_code: e.target.value})} required />
                                 <input style={inputStyle} type="number" placeholder="Units" value={form.units} onChange={e => setForm({...form, units: e.target.value})} required />
@@ -241,6 +265,10 @@ const Curriculum = () => {
                     <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '16px', width: '100%', maxWidth: '400px', boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}>
                         <h3 style={{ marginTop: 0, marginBottom: '20px', color: '#2c3e50', fontSize: '1.25rem', fontWeight: '600', borderBottom: '1px solid #edf2f7', paddingBottom: '15px' }}>📚 Load Premade Curriculum</h3>
                         <p style={{ marginBottom: '20px', color: '#475569', fontSize: '0.95rem' }}>Select a 4-year curriculum template to bulk-add to the database. These can be edited anytime later.</p>
+                        <div style={{ marginBottom: '15px' }}>
+                            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#475569' }}>Curriculum Year:</label>
+                            <input style={inputStyle} value={templateYear} onChange={e => setTemplateYear(e.target.value)} placeholder="e.g. 2024-2025" />
+                        </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                             <button onClick={() => handleLoadTemplate('BSIT')} style={{ padding: '12px', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Load 4-Year BSIT Curriculum</button>
                             <button onClick={() => handleLoadTemplate('BSCS')} style={{ padding: '12px', backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600' }}>Load 4-Year BSCS Curriculum</button>

@@ -46,6 +46,17 @@ const UserRow = ({ user, onEdit }) => {
       </td>
       <td style={styles.td}>{user.department || '—'}</td>
       <td style={styles.td}>{user.course || '—'}</td>
+      <td style={styles.td}>
+        {user.role === 'student' ? (
+          <span style={{ 
+            padding: '4px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 'bold',
+            backgroundColor: user.student_profile?.student_status === 'Irregular' ? '#fdecea' : '#e6f4ea',
+            color: user.student_profile?.student_status === 'Irregular' ? '#e74a3b' : '#1cc88a'
+           }}>
+             {user.student_profile?.student_status || 'Regular'}
+          </span>
+        ) : '—'}
+      </td>
       <td style={styles.td}>{new Date(user.created_at).toLocaleDateString()}</td>
       <td style={styles.td} onClick={(e) => e.stopPropagation()}>
         <button
