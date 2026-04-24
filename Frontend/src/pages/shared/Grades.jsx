@@ -176,7 +176,7 @@ const Grades = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <h2>📝 Grades Management</h2>
                     {isSecureVerified && (

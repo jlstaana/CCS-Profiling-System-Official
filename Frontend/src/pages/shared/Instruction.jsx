@@ -280,7 +280,7 @@ const Instruction = () => {
 };
 
 const S = {
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: 24 },
   pageTitle: { fontSize: 24, fontWeight: 600, color: '#1f2f70', margin: 0 },
   btn: { padding: '9px 18px', backgroundColor: '#1cc88a', color: 'white', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' },
   empty: { padding: 60, textAlign: 'center', color: '#858796' },
@@ -299,7 +299,7 @@ const S = {
   delBtn: { padding: '5px 10px', backgroundColor: '#fee', color: '#e74a3b', border: '1px solid #f5c6cb', borderRadius: 6, fontSize: 12, cursor: 'pointer' },
   overlay: { position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
   modal: { backgroundColor: 'white', borderRadius: 14, width: '90%', maxWidth: 500, maxHeight: '90vh', overflow: 'auto' },
-  modalHead: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 24px', borderBottom: '1px solid #e3e6f0' },
+  modalHead: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', padding: '18px 24px', borderBottom: '1px solid #e3e6f0' },
   close: { background: 'none', border: 'none', fontSize: 26, cursor: 'pointer', color: '#858796', lineHeight: 1 },
   modalBody: { padding: '18px 24px' },
   modalFoot: { display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '14px 24px', borderTop: '1px solid #e3e6f0' },

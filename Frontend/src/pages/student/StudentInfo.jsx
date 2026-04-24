@@ -107,7 +107,7 @@ const StudentInfo = () => {
 
   return (
     <div style={S.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}>
         <h1 style={{ ...S.pageTitle, marginBottom: 0 }}>Student Profile</h1>
         <button style={S.editButton} onClick={() => setShowEditModal(true)}>
           ✏️ Edit Profile
@@ -386,7 +386,7 @@ const FormGroup = ({ label, children }) => (
 
 const ListEditor = ({ label, items, onAdd, onRemove }) => (
     <div style={{ marginBottom: '16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '8px' }}>
         <label style={S.label}>{label}</label>
         <button onClick={onAdd} style={S.actionBtnMini}>+ Add</button>
       </div>
