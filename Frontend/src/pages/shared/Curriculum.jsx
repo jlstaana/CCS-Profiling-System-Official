@@ -168,7 +168,7 @@ const Curriculum = () => {
 
     return (
         <div style={{ padding: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: 20 }}>
                 <h2>📚 Curriculum Management</h2>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                     <select 

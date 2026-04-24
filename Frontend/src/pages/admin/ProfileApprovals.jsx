@@ -163,7 +163,7 @@ const ProfileApprovals = () => {
 
 const styles = {
   container: { maxWidth: '1100px', margin: '0 auto', padding: '24px 16px' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' },
   pageTitle: { fontSize: '1.75rem', fontWeight: 800, color: '#1f2f70', margin: 0, letterSpacing: '-0.02em' },
   refreshBtn: { padding: '8px 16px', backgroundColor: '#f8f9fc', border: '1px solid #eaecf4', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', color: '#4e73df' },
   
@@ -173,7 +173,7 @@ const styles = {
 
   requestList: { display: 'flex', flexDirection: 'column', gap: '20px' },
   requestCard: { backgroundColor: 'white', borderRadius: '18px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.04)', border: '1px solid #f8f9fc' },
-  cardHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' },
+  cardHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '20px' },
   userInfo: { display: 'flex', gap: '16px', alignItems: 'center' },
   avatar: { width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '20px', fontWeight: '800' },
   userName: { fontSize: '1.1rem', fontWeight: '700', color: '#1f2f70', margin: 0 },

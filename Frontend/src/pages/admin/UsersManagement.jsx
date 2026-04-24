@@ -293,7 +293,7 @@ const UsersManagement = () => {
 };
 
 const styles = {
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' },
   pageTitle: { fontSize: '24px', fontWeight: '600', color: '#1f2f70', margin: 0 },
   addButton: {
     padding: '10px 20px', backgroundColor: '#1cc88a', color: 'white',
@@ -341,7 +341,7 @@ const styles = {
   },
   modal: { backgroundColor: 'white', borderRadius: '14px', width: 'min(95%, 620px)', maxHeight: '90vh', overflow: 'auto' },
   modalHeader: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px',
     padding: '20px 24px', borderBottom: '1px solid #e3e6f0'
   },
   closeButton: { background: 'none', border: 'none', fontSize: '26px', cursor: 'pointer', color: '#858796', lineHeight: 1 },

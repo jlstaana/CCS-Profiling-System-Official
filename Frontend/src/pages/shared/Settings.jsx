@@ -85,7 +85,7 @@ const Settings = () => {
         { t: 'Browser Alerts', d: 'Get instant notifications for messages', val: true },
         { t: 'Marketing emails', d: 'Receive news about system updates', val: false },
       ].map((item, i) => (
-        <div key={i} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f8f9fc'}}>
+        <div key={i} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', padding: '16px 0', borderBottom: '1px solid #f8f9fc'}}>
           <div>
             <div style={{fontWeight: '700', color: '#1f2f70'}}>{item.t}</div>
             <div style={{fontSize: '0.85rem', color: '#858796'}}>{item.d}</div>

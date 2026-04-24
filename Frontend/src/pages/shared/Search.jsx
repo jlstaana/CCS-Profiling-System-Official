@@ -205,7 +205,7 @@ const Search = () => {
                   {r.icon}
                 </div>
                 <div style={S.cardContent}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
                     <h3 style={S.cardTitle}>{r.title}</h3>
                     <span style={{ fontSize: '0.65rem', padding: '2px 6px', backgroundColor: '#f8f9fc', borderRadius: 4, color: '#858796', fontWeight: 800, textTransform: 'uppercase' }}>
                       {r.type}

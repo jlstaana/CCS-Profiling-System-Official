@@ -46,6 +46,8 @@ const StudyGroups = () => {
     header: {
       display: 'flex',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '12px',
       alignItems: 'center',
       marginBottom: '24px',
       flexWrap: 'wrap',
@@ -112,6 +114,8 @@ const StudyGroups = () => {
     groupHeader: {
       display: 'flex',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '12px',
       alignItems: 'flex-start',
       marginBottom: '12px'
     },
@@ -181,6 +185,8 @@ const StudyGroups = () => {
     detailRow: {
       display: 'flex',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '12px',
       alignItems: 'center',
       marginBottom: '8px',
       fontSize: '13px',
@@ -220,6 +226,8 @@ const StudyGroups = () => {
     groupFooter: {
       display: 'flex',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '12px',
       alignItems: 'center',
       borderTop: '1px solid #f8f9fc',
       paddingTop: '16px'
@@ -290,6 +298,8 @@ const StudyGroups = () => {
     modalHeader: {
       display: 'flex',
       justifyContent: 'space-between',
+      flexWrap: 'wrap',
+      gap: '12px',
       alignItems: 'center',
       marginBottom: '20px'
     },

@@ -224,7 +224,7 @@ const Events = () => {
 };
 
 const S = {
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: 20 },
   pageTitle: { fontSize: 24, fontWeight: 600, color: '#1f2f70', margin: 0 },
   viewBtn: { padding: '7px 14px', border: '1px solid #d1d3e2', borderRadius: 8, fontSize: 13, cursor: 'pointer', background: 'white', color: '#5a5c69' },
   viewBtnActive: { backgroundColor: '#1f2f70', color: 'white', border: '1px solid #1f2f70' },
@@ -249,7 +249,7 @@ const S = {
   calMeta: { fontSize: 12, opacity: 0.9 },
   overlay: { position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 },
   modal: { backgroundColor: 'white', borderRadius: 14, width: '90%', maxWidth: 560, maxHeight: '90vh', overflow: 'auto' },
-  modalHead: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '18px 24px', borderBottom: '1px solid #e3e6f0' },
+  modalHead: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', padding: '18px 24px', borderBottom: '1px solid #e3e6f0' },
   close: { background: 'none', border: 'none', fontSize: 26, cursor: 'pointer', color: '#858796', lineHeight: 1 },
   modalBody: { padding: '18px 24px' },
   modalFoot: { display: 'flex', justifyContent: 'flex-end', gap: 10, padding: '14px 24px', borderTop: '1px solid #e3e6f0' },

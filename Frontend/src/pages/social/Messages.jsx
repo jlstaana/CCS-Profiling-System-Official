@@ -225,7 +225,7 @@ const Messages = () => {
         <div className={styles.chatArea}>
           {/* Header */}
           <div className={styles.chatHeader}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', width: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <button className={styles.backBtn} onClick={() => setSelectedConvId(null)}>←</button>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

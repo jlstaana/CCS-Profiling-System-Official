@@ -74,7 +74,7 @@ const AdminInfo = () => {
 
   return (
     <div style={styles.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}>
         <h1 style={{ ...styles.pageTitle, marginBottom: 0 }}>System Administrator Profile</h1>
         <button style={styles.editButton} onClick={() => setShowEditModal(true)}>
           ✏️ Edit Profile
@@ -249,7 +249,7 @@ const styles = {
   // Modal
   modalOverlay: { position: 'fixed', inset: 0, backgroundColor: 'rgba(31, 47, 112, 0.4)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1200 },
   modal: { backgroundColor: 'white', borderRadius: '24px', width: 'min(95%, 650px)', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' },
-  modalHeader: { padding: '24px 32px', borderBottom: '1px solid #f0f2f5', display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
+  modalHeader: { padding: '24px 32px', borderBottom: '1px solid #f0f2f5', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' },
   closeButton: { background: 'none', border: 'none', fontSize: '28px', color: '#b7b9cc', cursor: 'pointer' },
   warningBox: { display: 'flex', gap: '12px', padding: '16px', backgroundColor: '#fff8e1', color: '#856404', borderRadius: '12px', marginBottom: '24px', alignItems: 'center', fontSize: '12px' },
   modalBody: { padding: '32px' },

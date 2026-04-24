@@ -74,7 +74,7 @@ const FacultyInfo = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}>
         <h1 style={{ ...styles.pageTitle, marginBottom: 0 }}>Faculty Information</h1>
         <button 
           style={styles.editButton} 
@@ -381,7 +381,7 @@ const FacultyInfo = () => {
               </div>
 
                <div style={styles.formGroup}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '8px' }}>
                   <label style={styles.label}>Qualifications & Education (Requires Approval)</label>
                   <button 
                     onClick={handleOpenQualModal}
@@ -686,7 +686,7 @@ const styles = {
     boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
   },
   modalHeader: {
-    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px',
     padding: '16px 20px', borderBottom: '1px solid #e3e6f0'
   },
   closeButton: {

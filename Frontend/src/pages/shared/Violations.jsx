@@ -259,7 +259,7 @@ const Violations = () => {
 
 const S = {
   container: { padding: '24px', maxWidth: '1200px', margin: '0 auto' },
-  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '32px' },
   title: { fontSize: '28px', fontWeight: '700', color: '#1f2f70', margin: '0 0 8px 0' },
   subtitle: { fontSize: '15px', color: '#858796', margin: 0 },
   addBtn: { padding: '12px 24px', backgroundColor: '#e74a3b', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' },
@@ -284,7 +284,7 @@ const S = {
   // Modal styles
   modalOverlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1100 },
   modal: { backgroundColor: 'white', borderRadius: '15px', width: '90%', maxWidth: '550px', boxShadow: '0 15px 50px rgba(0,0,0,0.2)', overflow: 'hidden' },
-  modalHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 24px', borderBottom: '1px solid #e3e6f0', backgroundColor: '#f8f9fc' },
+  modalHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', padding: '20px 24px', borderBottom: '1px solid #e3e6f0', backgroundColor: '#f8f9fc' },
   closeBtn: { background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#858796' },
   form: { padding: '24px' },
   formGroup: { marginBottom: '20px' },
