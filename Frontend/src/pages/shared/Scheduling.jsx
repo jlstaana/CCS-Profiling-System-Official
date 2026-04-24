@@ -26,7 +26,7 @@ const BLANK = {
 
 const Scheduling = () => {
   const { user } = useAuth();
-  const canEdit = user?.role === 'admin';
+  const canEdit = user?.role === 'admin' || user?.role === 'faculty';
 
   const [schedules, setSchedules] = useState([]);
   const [courses, setCourses]     = useState([]);

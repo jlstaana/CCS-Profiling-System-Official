@@ -32,5 +32,10 @@ class DatabaseSeeder extends Seeder
             ['email' => 'student123@ccs.edu'],
             ['name' => 'Demo Student', 'password' => bcrypt('any'), 'role' => 'student', 'course' => 'BSCS']
         );
+
+        // ── Rich Demo Data ────────────────────────────────────────
+        $this->call([
+            DemoDataSeeder::class,
+        ]);
     }
 }

@@ -23,6 +23,12 @@ const Instruction = () => {
   const [error, setError] = useState('');
   const fileRef = useRef();
 
+  // New Course modal
+  const [showCourseModal, setShowCourseModal] = useState(false);
+  const [courseForm, setCourseForm] = useState({ code: '', title: '' });
+  const [courseError, setCourseError] = useState('');
+  const [courseCreating, setCourseCreating] = useState(false);
+
   const fetchCourses = async () => {
     setLoading(true);
     try {
@@ -99,11 +105,18 @@ const Instruction = () => {
     <div>
       <div style={S.header}>
         <h1 style={S.pageTitle}>Instruction &amp; Course Materials</h1>
-        {canUpload && selectedCourse && (
-          <button style={S.btn} onClick={() => { setError(''); setShowModal(true); }}>
-            + Upload Material
-          </button>
-        )}
+        <div style={{ display: 'flex', gap: 10 }}>
+          {canUpload && (
+            <button style={{ ...S.btn, backgroundColor: '#4e73df' }} onClick={() => { setCourseError(''); setCourseForm({ code: '', title: '' }); setShowCourseModal(true); }}>
+              + New Course
+            </button>
+          )}
+          {canUpload && selectedCourse && (
+            <button style={S.btn} onClick={() => { setError(''); setShowModal(true); }}>
+              + Upload Material
+            </button>
+          )}
+        </div>
       </div>
 
       {loading ? (
@@ -202,6 +215,62 @@ const Instruction = () => {
             <div style={S.modalFoot}>
               <button onClick={() => setShowModal(false)} style={S.cancelBtn}>Cancel</button>
               <button onClick={handleUpload} style={S.saveBtn} disabled={saving}>{saving ? 'Uploading…' : 'Upload'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* New Course Modal */}
+      {showCourseModal && (
+        <div style={S.overlay}>
+          <div style={S.modal}>
+            <div style={S.modalHead}>
+              <h3 style={{ margin: 0 }}>➕ Create New Course</h3>
+              <button onClick={() => setShowCourseModal(false)} style={S.close}>×</button>
+            </div>
+            <div style={S.modalBody}>
+              {courseError && <div style={S.errBox}>{courseError}</div>}
+              <div style={S.fg}>
+                <label style={S.label}>Course Code *</label>
+                <input
+                  style={S.inp}
+                  value={courseForm.code}
+                  onChange={e => setCourseForm(p => ({ ...p, code: e.target.value }))}
+                  placeholder="e.g. ITEW6"
+                />
+              </div>
+              <div style={S.fg}>
+                <label style={S.label}>Course Title *</label>
+                <input
+                  style={S.inp}
+                  value={courseForm.title}
+                  onChange={e => setCourseForm(p => ({ ...p, title: e.target.value }))}
+                  placeholder="e.g. Web Systems and Technologies"
+                />
+              </div>
+            </div>
+            <div style={S.modalFoot}>
+              <button onClick={() => setShowCourseModal(false)} style={S.cancelBtn}>Cancel</button>
+              <button
+                style={S.saveBtn}
+                disabled={courseCreating}
+                onClick={async () => {
+                  if (!courseForm.code.trim()) { setCourseError('Course code is required.'); return; }
+                  if (!courseForm.title.trim()) { setCourseError('Course title is required.'); return; }
+                  setCourseCreating(true); setCourseError('');
+                  try {
+                    const res = await axios.post('/courses', { code: courseForm.code.trim(), title: courseForm.title.trim() });
+                    setShowCourseModal(false);
+                    await fetchCourses();
+                    setSelectedCourse(res.data);
+                    fetchMaterials(res.data.id);
+                  } catch (e) {
+                    setCourseError(e.response?.data?.message || 'Failed to create course.');
+                  } finally { setCourseCreating(false); }
+                }}
+              >
+                {courseCreating ? 'Creating…' : 'Create Course'}
+              </button>
             </div>
           </div>
         </div>

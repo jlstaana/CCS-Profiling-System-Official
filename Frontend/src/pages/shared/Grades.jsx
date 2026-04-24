@@ -74,6 +74,7 @@ const Grades = () => {
         });
     };
 
+    const prepareBatchData = () => {
         const payload = [];
         students.forEach(student => {
             const data = batchGrades[student.id];
