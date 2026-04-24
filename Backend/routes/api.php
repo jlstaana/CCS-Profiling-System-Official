@@ -97,9 +97,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Curriculums
     Route::get('/curriculums', [\App\Http\Controllers\CurriculumController::class, 'index']);
     Route::post('/curriculums', [\App\Http\Controllers\CurriculumController::class, 'store']);
+    Route::post('/curriculums/bulk', [\App\Http\Controllers\CurriculumController::class, 'bulkStore']);
+    Route::put('/curriculums/{id}', [\App\Http\Controllers\CurriculumController::class, 'update']);
     Route::delete('/curriculums/{id}', [\App\Http\Controllers\CurriculumController::class, 'destroy']);
 
     // Grades
+    Route::get('/grades/enrolled/{courseId}', [\App\Http\Controllers\GradeController::class, 'getEnrolledStudents']);
     Route::post('/grades/batch', [\App\Http\Controllers\GradeController::class, 'batchStore']);
     Route::get('/grades', [\App\Http\Controllers\GradeController::class, 'index']);
     Route::post('/grades', [\App\Http\Controllers\GradeController::class, 'store']);

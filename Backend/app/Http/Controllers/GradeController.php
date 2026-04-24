@@ -18,6 +18,13 @@ class GradeController extends Controller
         return response()->json(StudentGrade::with(['student', 'faculty', 'course'])->get());
     }
 
+    public function getEnrolledStudents($course_id)
+    {
+        $enrolledIds = \App\Models\Enrollment::where('course_id', $course_id)->pluck('student_id');
+        $students = User::whereIn('id', $enrolledIds)->get();
+        return response()->json($students);
+    }
+
     public function batchStore(Request $request)
     {
         $validated = $request->validate([

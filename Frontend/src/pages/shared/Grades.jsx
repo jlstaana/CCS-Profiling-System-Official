@@ -21,15 +21,13 @@ const Grades = () => {
 
     const fetchData = async () => {
         try {
-            const [gradesRes, coursesRes, usersRes] = await Promise.all([
+            const [gradesRes, coursesRes] = await Promise.all([
                 axios.get('/grades'),
-                canEncode ? axios.get('/courses') : Promise.resolve({ data: [] }),
-                canEncode ? axios.get('/admin/users') : Promise.resolve({ data: [] })
+                canEncode ? axios.get('/courses') : Promise.resolve({ data: [] })
             ]);
             setGrades(gradesRes.data);
             if (canEncode) {
                 setCourses(coursesRes.data);
-                setStudents(usersRes.data.filter(u => u.role === 'student'));
             }
         } catch (e) {
             console.error(e);
@@ -116,27 +114,41 @@ const Grades = () => {
         }
     };
 
-    // Load existing grades into batchGrades when encoding setup changes
+    // Fetch enrolled students when course is selected
     useEffect(() => {
         if (isEncoding && selectedCourse) {
-            const loadedGrades = {};
-            students.forEach(student => {
-                const existing = grades.find(g => 
-                    g.student_id === student.id && 
-                    g.course_id == selectedCourse && 
-                    g.semester === semester && 
-                    g.academic_year === academicYear
-                );
-                
-                loadedGrades[student.id] = {
-                    prelim: existing?.prelim || '',
-                    midterm: existing?.midterm || '',
-                    finals: existing?.finals || '',
-                };
-            });
-            setBatchGrades(loadedGrades);
+            const fetchEnrolled = async () => {
+                try {
+                    const res = await axios.get(`/grades/enrolled/${selectedCourse}`);
+                    const enrolledStudents = res.data;
+                    setStudents(enrolledStudents);
+
+                    // Load existing grades into batchGrades
+                    const loadedGrades = {};
+                    enrolledStudents.forEach(student => {
+                        const existing = grades.find(g => 
+                            g.student_id === student.id && 
+                            g.course_id == selectedCourse && 
+                            g.semester === semester && 
+                            g.academic_year === academicYear
+                        );
+                        
+                        loadedGrades[student.id] = {
+                            prelim: existing?.prelim || '',
+                            midterm: existing?.midterm || '',
+                            finals: existing?.finals || '',
+                        };
+                    });
+                    setBatchGrades(loadedGrades);
+                } catch (e) {
+                    console.error("Failed to fetch enrolled students", e);
+                }
+            };
+            fetchEnrolled();
+        } else {
+            setStudents([]);
         }
-    }, [isEncoding, selectedCourse, semester, academicYear]);
+    }, [isEncoding, selectedCourse, semester, academicYear, grades]);
 
     return (
         <div style={{ padding: '20px' }}>
