@@ -102,7 +102,7 @@ class AdminController extends Controller
             'user_id'    => $this->generateUserId($fields['role']),
             'name'       => $fields['name'],
             'email'      => $fields['email'],
-            'password'   => bcrypt($fields['password']),
+            'password'   => $fields['password'],
             'role'       => $fields['role'],
             'department' => $fields['department'] ?? null,
             'course'     => $fields['course'] ?? null,
@@ -145,7 +145,7 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
         $data = $request->only(['name', 'email', 'role', 'department', 'course', 'bio']);
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->input('password'));
+            $data['password'] = $request->input('password');
         }
         $user->update($data);
 
