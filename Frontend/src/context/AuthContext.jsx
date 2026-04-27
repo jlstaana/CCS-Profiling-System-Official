@@ -26,13 +26,14 @@ const getBaseURL = () => {
     }
   }
 
-  // 4. Last Resort: Default Ngrok
-  return 'https://predatorily-nonfelonious-ranae.ngrok-free.dev/api';
+  // 4. Last Resort: Default LocalTunnel
+  return 'https://ccs-profiling-backend.loca.lt/api';
 };
 
 axios.defaults.baseURL = getBaseURL();
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
+axios.defaults.headers.common['Bypass-Tunnel-Reminder'] = 'true'; // Required for LocalTunnel
 axios.defaults.withCredentials = true; // Required for CORS/Sanctum
 
 console.log(`AuthContext Initialized [${import.meta.env.MODE}]:`, {
