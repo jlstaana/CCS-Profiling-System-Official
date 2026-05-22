@@ -5,29 +5,52 @@ import axios from 'axios';
 const LOCAL_API = 'http://localhost:8000/api';
 const NGROK_API = 'https://predatorily-nonfelonious-ranae.ngrok-free.dev/api';
 
+const isFrontendHost = (url) => {
+  try {
+    const normalized = url.replace(/\/$/, '');
+    const parsed = new URL(normalized);
+    return parsed.hostname.endsWith('.vercel.app') || parsed.hostname.endsWith('.netlify.app');
+  } catch {
+    return false;
+  }
+};
+
 // Dynamically determine which API to use
 const getBaseURL = () => {
   // 1. Highest Priority: Vercel/Vite Environment Variable
   if (import.meta.env.VITE_API_BASE_URL) {
     let url = import.meta.env.VITE_API_BASE_URL.replace(/\/$/, "");
-    // Force /api suffix if missing (prevents 405 errors)
+
     if (!url.endsWith("/api")) {
       url += "/api";
     }
+
+    if (typeof window !== 'undefined') {
+      const frontendOrigin = window.location.origin;
+      const targetOrigin = url.replace(/\/api$/, '');
+      if (frontendOrigin === targetOrigin || isFrontendHost(targetOrigin)) {
+        console.warn(
+          '[AuthContext] VITE_API_BASE_URL appears to be a frontend URL or same-origin URL:',
+          url,
+          'This should point to your backend API host instead.'
+        );
+      }
+    }
+
     return url;
   }
 
-  // (Removed Vercel same-origin fallback to allow falling back to Ngrok)
-
-  // 3. Local Development Fallback
+  // 2. Local Development Fallback
   if (typeof window !== 'undefined') {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return 'http://localhost:8000/api';
+      console.info('[AuthContext] No VITE_API_BASE_URL set; using local backend at', LOCAL_API);
+      return LOCAL_API;
     }
   }
 
-  // 4. Last Resort: Default Ngrok
-  return 'https://crib-retread-swimwear.ngrok-free.dev/api';
+  // 3. Last Resort: Default Ngrok
+  console.warn('[AuthContext] No VITE_API_BASE_URL set; falling back to default ngrok backend:', NGROK_API);
+  return NGROK_API;
 };
 
 axios.defaults.baseURL = getBaseURL();
