@@ -44,6 +44,12 @@ const Messages = () => {
 
   useEffect(() => { fetchConversations(); }, []);
 
+  // ── Auto-sync conversations every 10 seconds ──
+  useEffect(() => {
+    const interval = setInterval(fetchConversations, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
   // ── Fetch messages when a conversation is selected ──
   const openConversation = async (conv) => {
     setSelectedConvId(conv.id);
@@ -61,6 +67,24 @@ const Messages = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // ── Auto-sync messages every 5 seconds when conversation is open ──
+  useEffect(() => {
+    if (!selectedConvId) return;
+    
+    const pollMessages = async () => {
+      try {
+        const res = await axios.get(`/messages/conversations/${selectedConvId}/messages`);
+        setMessages(res.data);
+      } catch (e) {
+        // Silently ignore polling errors
+        console.error('Error polling messages:', e);
+      }
+    };
+    
+    const interval = setInterval(pollMessages, 5000);
+    return () => clearInterval(interval);
+  }, [selectedConvId]);
 
   // ── Send message ──
   const handleSendMessage = async () => {
