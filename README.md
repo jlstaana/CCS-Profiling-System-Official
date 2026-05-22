@@ -81,7 +81,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 ## 🌍 Deployment
 
 ### Vercel (Frontend)
-The React frontend is seamlessly configured for Vercel deployment. Ensure `VITE_API_BASE_URL` in Vercel's environment variables points to your production backend URL.
+The React frontend is seamlessly configured for Vercel deployment. If you are using `https://ccs-profiling-system-official-front.vercel.app/`, make sure this frontend domain is allowed by the backend and that `VITE_API_BASE_URL` is set in Vercel to your production backend URL.
+- Example: `VITE_API_BASE_URL=https://your-backend-host/api`
 
 ### Railway (Backend)
 The Laravel API is optimized to be deployed on Railway. Remember to:
