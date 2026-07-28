@@ -218,7 +218,7 @@ const AdminDashboard = () => {
                 <div style={{
                   width: '64px', height: '64px', borderRadius: '16px', backgroundColor: 'linear-gradient(135deg, var(--primary), var(--secondary))',
                   color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', overflow: 'hidden',
-                  boxShadow: '0 4px 10px rgba(78, 115, 223, 0.2)', backgroundColor: '#1f2f70'
+                  boxShadow: '0 4px 10px rgba(78, 115, 223, 0.2)'
                 }}>
                   {selectedUser.profilePic ? (
                     <img src={selectedUser.profilePic} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

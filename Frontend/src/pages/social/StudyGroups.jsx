@@ -46,8 +46,6 @@ const StudyGroups = () => {
     header: {
       display: 'flex',
       justifyContent: 'space-between',
-      flexWrap: 'wrap',
-      gap: '12px',
       alignItems: 'center',
       marginBottom: '24px',
       flexWrap: 'wrap',
