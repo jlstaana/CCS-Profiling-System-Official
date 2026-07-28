@@ -77,9 +77,10 @@
   background-color: white;
   border-radius: 6px;
   padding: var(--space-sm);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm);
   box-sizing: border-box;
   overflow-x: auto;
+  border: 1px solid var(--border);
 }
 
 @media (min-width: 481px) {

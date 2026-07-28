@@ -13,8 +13,8 @@
 
 .sidebar {
   height: 100vh;
-  background-color: var(--primary-dark, #1f2f70);
-  color: white;
+  background-color: var(--card-bg, #ffffff);
+  color: var(--text-dark, #202124);
   position: fixed;
   top: 0;
   left: 0;
@@ -60,7 +60,7 @@
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-lg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border, #dadce0);
 }
 
 .logoIcon {
@@ -87,9 +87,9 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: var(--success, #1cc88a);
-    color: white;
-    border: none;
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-dark, #202124);
+    border: 1px solid var(--border, #dadce0);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -103,7 +103,7 @@
 
 .toggleBtn:hover {
   transform: scale(1.1);
-  background-color: #169b6b;
+  background-color: var(--light-bg, #f1f3f4);
 }
 
 /* Mobile Header */
@@ -112,7 +112,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-md) var(--space-lg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--border, #dadce0);
 }
 
 @media (min-width: 769px) {
@@ -124,13 +124,13 @@
 .mobileTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: white;
+  color: var(--text-dark, #202124);
 }
 
 .mobileCloseBtn {
   background: none;
   border: none;
-  color: white;
+  color: var(--text-dark, #202124);
   font-size: 1.25rem;
   cursor: pointer;
   width: 32px;
@@ -142,7 +142,7 @@
 }
 
 .mobileCloseBtn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--light-bg, #f1f3f4);
 }
 
 /* Navigation */
@@ -162,16 +162,16 @@
 }
 
 .nav::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
 }
 
 .nav::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--border, #dadce0);
   border-radius: 4px;
 }
 
 .nav::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--text-muted, #5f6368);
 }
 
 /* Navigation Sections */
@@ -186,14 +186,14 @@
   padding: var(--space-xs) var(--space-lg);
   font-size: 0.6875rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-muted, #5f6368);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
 
 .socialTitle {
-  color: var(--success, #1cc88a);
+  color: var(--primary, #1a73e8);
 }
 
 /* Navigation Links */
@@ -202,23 +202,24 @@
   align-items: center;
   gap: var(--space-sm);
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-dark, #202124);
   transition: all 0.2s ease;
   white-space: nowrap;
   padding: var(--space-sm) var(--space-lg);
-  border-left: 4px solid transparent;
   position: relative;
+  border-radius: 0 50px 50px 0;
+  margin-right: var(--space-sm);
 }
 
 .navLink:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
+  background-color: var(--light-bg, #f1f3f4);
+  color: var(--text-dark, #202124);
 }
 
 .navLink.active {
-  background-color: rgba(139, 92, 246, 0.15); /* Using secondary violet vibe */
-  border-left-color: var(--secondary, #8b5cf6);
-  color: white;
+  background-color: var(--primary-light, #e8f0fe);
+  color: var(--primary, #1a73e8);
+  font-weight: 600;
 }
 
 .navIcon {
@@ -238,9 +239,9 @@
 /* Footer */
 .footer {
   padding: var(--space-md) var(--space-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border, #dadce0);
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--text-muted, #5f6368);
 }
 
 .footerText {

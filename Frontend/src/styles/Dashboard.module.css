@@ -33,20 +33,19 @@
 
 .statCard {
   background-color: var(--card-bg);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 1.25rem;
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
 .statCard:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-xl), var(--shadow-glow);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .statIcon {
@@ -92,11 +91,10 @@
 
 .card {
   background-color: var(--card-bg);
-  border-radius: 16px;
+  border-radius: 8px;
   padding: var(--space-md);
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
 @media (min-width: 769px) {
@@ -134,35 +132,22 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 20px;
   text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
+  font-family: 'Roboto', 'Inter', sans-serif;
+  font-weight: 500;
   font-size: 0.95rem;
   color: white !important;
-  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.actionButton::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%; width: 50%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: all 0.4s ease;
-}
-
-.actionButton:hover::before {
-  left: 100%;
+  background-color: var(--primary) !important;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
 }
 
 .actionButton:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  background-color: var(--primary-dark) !important;
 }
 
 .actionIcon {
@@ -180,36 +165,32 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  padding: 1.25rem;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(227, 230, 240, 0.5);
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
   cursor: pointer;
   position: relative;
 }
 
 .userItem:hover {
-  background-color: white;
-  transform: translateX(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-color: var(--primary-light);
+  background-color: var(--light-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .userAvatar {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background-color: var(--primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: 500;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(78, 115, 223, 0.2);
-  border: 2px solid white;
 }
 
 .userContent {
@@ -321,35 +302,31 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  padding: 1.25rem;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(227, 230, 240, 0.5);
-  border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1rem;
+  background-color: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.2s ease;
   flex-wrap: wrap;
 }
 
 .scheduleItem:hover, .eventItem:hover, .activityItem:hover {
-  background-color: white;
-  transform: translateX(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-color: var(--primary-light);
+  background-color: var(--light-bg);
+  box-shadow: var(--shadow-sm);
 }
 
 .scheduleTime, .eventDate {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary-light), white);
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 8px;
+  background-color: var(--primary-light);
   color: var(--primary);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 500;
   flex-shrink: 0;
-  box-shadow: 0 4px 10px rgba(78, 115, 223, 0.1);
-  border: 1px solid rgba(78, 115, 223, 0.1);
   text-align: center;
   line-height: 1.2;
 }

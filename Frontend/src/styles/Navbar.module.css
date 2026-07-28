@@ -3,8 +3,9 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background-color: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  background-color: var(--card-bg, #ffffff);
+  border-bottom: 1px solid var(--border, #dadce0);
+  box-shadow: none;
   transition: all 0.3s ease;
   z-index: 100;
 }
@@ -12,8 +13,6 @@
 @media (min-width: 1024px) {
   .navbar {
     padding: 1rem 1.5rem;
-    border-radius: 0 0 14px 14px;
-    margin: 0 1.5rem 1.5rem 1.5rem;
   }
 }
 
@@ -33,23 +32,23 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--primary, #1f2f70);
+  color: var(--text-dark);
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 50%;
   transition: background-color 0.2s ease;
 }
 
 .menuButton:hover {
-  background-color: #f0f0f0;
+  background-color: var(--light-bg);
 }
 
 .hamburger {
   width: 20px;
   height: 2px;
-  background-color: var(--primary, #1f2f70);
+  background-color: var(--text-dark);
   display: block;
 }
 
@@ -64,9 +63,9 @@
 .searchContainer {
   display: none;
   align-items: center;
-  background-color: #f8f9fc;
-  border: 1px solid #e3e6f0;
-  border-radius: 10px;
+  background-color: var(--light-bg, #f1f3f4);
+  border: none;
+  border-radius: 24px;
   padding: 0 1rem;
   width: 100%;
   max-width: 300px;
@@ -82,8 +81,7 @@
 
 .searchContainer:focus-within {
   background-color: white;
-  border-color: #4e73df;
-  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .searchIcon {
@@ -98,7 +96,7 @@
   outline: none;
   padding: 0.6rem 0;
   font-size: 0.875rem;
-  color: #1f2f70;
+  color: var(--text-dark);
   width: 100%;
 }
 
@@ -160,8 +158,8 @@
 }
 
 .iconButton:hover {
-  background-color: #f8f9fc;
-  color: var(--primary, #1f2f70);
+  background-color: var(--light-bg);
+  color: var(--primary);
 }
 
 .iconButton.hasBadge {
@@ -206,8 +204,9 @@
   width: calc(100vw - 2rem);
   max-width: 340px;
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border);
   z-index: 1100;
   overflow: hidden;
   animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
